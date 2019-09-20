@@ -92,9 +92,49 @@ var createDocumentFragment = function (template, photos) {
   return docFragment;
 };
 
+// Создаем элемент для отображение комментария
+var createCommentElement = function (options) {
+  var item = document.createElement('li');
+  item.classList.add('social__comment');
+  item.innerHTML = '<img class="social__picture" ' +
+    'src="' + options.avatar + '" ' +
+    'alt="' + options.name + '" ' +
+    'width="35" height="35">' +
+    '<p class="social__text">' + options.message + '</p>';
+  return item;
+};
+
+// Создаем список комментариев
+var fillComments = function (comments) {
+  var docFragment = document.createDocumentFragment();
+  comments.forEach(function (value) {
+    docFragment.appendChild(createCommentElement(value));
+  });
+  return docFragment;
+};
+
+// Показываем большую фотографию
+var showBigPicture = function (photo) {
+  var bigPictureElement = document.querySelector('.big-picture');
+  bigPictureElement.querySelector('.big-picture__img img').src = photo.url;
+  bigPictureElement.querySelector('.likes-count').textContent = photo.likes;
+  bigPictureElement.querySelector('.social__caption').textContent = photo.description;
+  bigPictureElement.querySelector('.comments-count').textContent = photo.comments.length;
+  var socialComments = bigPictureElement.querySelector('.social__comments');
+  var itemCount = socialComments.childNodes.length;
+  for (var i = 0; i < itemCount; i++) {
+    socialComments.removeChild(socialComments.firstChild);
+  }
+  socialComments.appendChild(fillComments(photo.comments));
+  bigPictureElement.querySelector('.social__comment-count').classList.add('visually-hidden');
+  bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
+  bigPictureElement.classList.remove('hidden');
+};
+
 var photos = createPhotos(PHOTO_COUNT);
 var photoTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 document.querySelector('.pictures')
   .appendChild(createDocumentFragment(photoTemplate, photos));
+showBigPicture(photos[0]);
