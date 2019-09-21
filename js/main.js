@@ -85,10 +85,10 @@ var fillPhotoElement = function (element, data) {
 // Создает и заполняет DocumentFragment
 var createDocumentFragment = function (template, photos) {
   var docFragment = document.createDocumentFragment();
-  for (var i = 0; i < photos.length; i++) {
+  photos.forEach( function (value) {
     var clone = template.cloneNode(true);
-    docFragment.appendChild(fillPhotoElement(clone, photos[i]));
-  }
+    docFragment.appendChild(fillPhotoElement(clone, value));
+  });
   return docFragment;
 };
 
@@ -121,10 +121,7 @@ var showBigPicture = function (photo) {
   bigPictureElement.querySelector('.social__caption').textContent = photo.description;
   bigPictureElement.querySelector('.comments-count').textContent = photo.comments.length;
   var socialComments = bigPictureElement.querySelector('.social__comments');
-  var itemCount = socialComments.childNodes.length;
-  for (var i = 0; i < itemCount; i++) {
-    socialComments.removeChild(socialComments.firstChild);
-  }
+  socialComments.innerHTML ='';
   socialComments.appendChild(fillComments(photo.comments));
   bigPictureElement.querySelector('.social__comment-count').classList.add('visually-hidden');
   bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
