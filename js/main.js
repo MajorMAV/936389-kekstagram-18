@@ -46,7 +46,7 @@ var getAvatar = function (maxNumber) {
 };
 
 // Генерирует массив случайных комментариев
-var createComments = function () {
+var createRandomComments = function () {
   var commentCount = Math.ceil(Math.random() * AVATAR_COUNT);
   var comments = [];
   for (var i = 0; i < commentCount; i++) {
@@ -68,7 +68,7 @@ var createPhotos = function (count) {
       url: createUrl(),
       description: 'описание фотографии',
       likes: MIN_LIKE_COUNT + Math.round(Math.random() * (MAX_LIKE_COUNT - MIN_LIKE_COUNT)),
-      comments: createComments()
+      comments: createRandomComments()
     });
   }
   return photos;
@@ -85,7 +85,7 @@ var fillPhotoElement = function (element, data) {
 // Создает и заполняет DocumentFragment
 var createDocumentFragment = function (template, photos) {
   var docFragment = document.createDocumentFragment();
-  photos.forEach( function (value) {
+  photos.forEach(function (value) {
     var clone = template.cloneNode(true);
     docFragment.appendChild(fillPhotoElement(clone, value));
   });
@@ -104,13 +104,19 @@ var createCommentElement = function (options) {
   return item;
 };
 
-// Создаем список комментариев
-var fillComments = function (comments) {
+// Создаем список елементов отображения комментариев
+var createCommentElements = function (comments) {
   var docFragment = document.createDocumentFragment();
   comments.forEach(function (value) {
     docFragment.appendChild(createCommentElement(value));
   });
   return docFragment;
+};
+
+// Наполняем контейнер комментариев
+var fillComments = function (container, comments) {
+  container.innerHTML = '';
+  container.appendChild(createCommentElements(comments));
 };
 
 // Показываем большую фотографию
@@ -120,9 +126,7 @@ var showBigPicture = function (photo) {
   bigPictureElement.querySelector('.likes-count').textContent = photo.likes;
   bigPictureElement.querySelector('.social__caption').textContent = photo.description;
   bigPictureElement.querySelector('.comments-count').textContent = photo.comments.length;
-  var socialComments = bigPictureElement.querySelector('.social__comments');
-  socialComments.innerHTML ='';
-  socialComments.appendChild(fillComments(photo.comments));
+  fillComments(bigPictureElement.querySelector('.social__comments'), photo.comments);
   bigPictureElement.querySelector('.social__comment-count').classList.add('visually-hidden');
   bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
   bigPictureElement.classList.remove('hidden');
