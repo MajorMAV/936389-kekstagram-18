@@ -20,6 +20,7 @@ var USER_NAMES = [
   'Олег',
   'Любовь'
 ];
+var ESC_KEY = 27;
 
 // Возвращает функцию-генератор url фото
 var getUrlGenerator = function (maxNumber) {
@@ -74,11 +75,18 @@ var createPhotos = function (count) {
   return photos;
 };
 
+var createPhotoElementHandler = function (photo) {
+  return function () {
+    showBigPicture(photo);
+  };
+};
+
 // Заполняет элемент, отображающий фото, данными
 var fillPhotoElement = function (element, data) {
   element.querySelector('.picture__img').src = data.url;
   element.querySelector('.picture__comments').innerText = data.comments.length;
   element.querySelector('.picture__likes').innerText = data.likes;
+  element.addEventListener('click', createPhotoElementHandler(data));
   return element;
 };
 
@@ -130,12 +138,86 @@ var showBigPicture = function (photo) {
   bigPictureElement.querySelector('.social__comment-count').classList.add('visually-hidden');
   bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
   bigPictureElement.classList.remove('hidden');
+  bigPictureElement.querySelector('#picture-cancel').addEventListener('click', pictureCancelClickHandler);
 };
 
+var hiddenBigPicture = function () {
+  document.querySelector('.big-picture').classList.add('hidden');
+  document.querySelector('#picture-cancel').removeEventListener('click', pictureCancelClickHandler);
+};
+
+var pictureCancelClickHandler = function () {
+  hiddenBigPicture();
+};
+// #region Свободный код
 var photos = createPhotos(PHOTO_COUNT);
 var photoTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 document.querySelector('.pictures')
   .appendChild(createDocumentFragment(photoTemplate, photos));
-showBigPicture(photos[0]);
+// #endregion
+
+var getScaleValue = function () {
+  var scaleInput = document.querySelector('.scale__control--value');
+  var scaleValue = Number(scaleInput.value.replace('%', ''));
+  if (!scaleValue) {
+    scaleValue = 100;
+    scaleInput.value = '100%';
+  }
+  return scaleValue;
+};
+
+var setScaleValue = function (value) {
+  document.querySelector('.scale__control--value').value = value + '%';
+};
+
+var setScale = function (value) {
+  if (value < 25 || value > 100) {
+    return;
+  }
+  setScaleValue(value);
+  document.querySelector('.img-upload__preview').style.transform = 'scale(' + (getScaleValue() / 100) + ')';
+};
+
+var claerEffects = function () {
+  setScale(100);
+};
+
+var openUploadWindow = function () {
+  document.querySelector('.img-upload__overlay').classList.remove('hidden');
+  document.querySelector('#upload-cancel').addEventListener('click', closeUploadWindow);
+  claerEffects();
+};
+
+var closeUploadWindow = function () {
+  document.querySelector('.img-upload__overlay').classList.add('hidden');
+  document.querySelector('#upload-cancel').removeEventListener('click', closeUploadWindow);
+  document.querySelector('#upload-file').value = '';
+};
+
+var uplaodFileChangeHandler = function () {
+  openUploadWindow();
+};
+
+var documentKeydownHandler = function (evt) {
+  if (evt.keyCode === ESC_KEY) {
+    closeUploadWindow();
+    hiddenBigPicture();
+  }
+};
+
+var scaleBiggerClickHandler = function () {
+  var value = getScaleValue();
+  setScale(value + 25);
+};
+
+var scaleSmallerClickHandler = function () {
+  var value = getScaleValue();
+  setScale(value - 25);
+};
+
+document.querySelector('#upload-file').addEventListener('change', uplaodFileChangeHandler);
+document.addEventListener('keydown', documentKeydownHandler);
+document.querySelector('.scale__control--bigger').addEventListener('click', scaleBiggerClickHandler);
+document.querySelector('.scale__control--smaller').addEventListener('click', scaleSmallerClickHandler);
