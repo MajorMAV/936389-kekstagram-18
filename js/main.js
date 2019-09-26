@@ -82,6 +82,7 @@ var createPhotos = function (count) {
   return photos;
 };
 
+// Обработчик onClick для открытия окна с большой фоткой
 var createPhotoElementHandler = function (photo) {
   return function () {
     showBigPicture(photo);
@@ -148,14 +149,17 @@ var showBigPicture = function (photo) {
   bigPictureElement.querySelector('#picture-cancel').addEventListener('click', pictureCancelClickHandler);
 };
 
+// Закрывет окно с большой фоткой
 var hiddenBigPicture = function () {
   document.querySelector('.big-picture').classList.add('hidden');
   document.querySelector('#picture-cancel').removeEventListener('click', pictureCancelClickHandler);
 };
 
+// Обработчик onClick для закрытия окна с большой фоткой
 var pictureCancelClickHandler = function () {
   hiddenBigPicture();
 };
+
 // #region Свободный код
 var photos = createPhotos(PHOTO_COUNT);
 var photoTemplate = document.querySelector('#picture')
@@ -165,6 +169,7 @@ document.querySelector('.pictures')
   .appendChild(createDocumentFragment(photoTemplate, photos));
 // #endregion
 
+// Возвращает установленное заначение масштаба для передачи на сервер
 var getScaleValue = function () {
   var scaleInput = document.querySelector('.scale__control--value');
   var scaleValue = Number(scaleInput.value.replace('%', ''));
@@ -175,10 +180,12 @@ var getScaleValue = function () {
   return scaleValue;
 };
 
+// Устанавливает значение масштаба для передачи на сервер
 var setScaleValue = function (value) {
   document.querySelector('.scale__control--value').value = value + '%';
 };
 
+// Устанавливает масштабирование
 var setScale = function (value) {
   if (value < SCALE_MIN_VALUE || value > SCALE_MAX_VALUE) {
     return;
@@ -187,27 +194,32 @@ var setScale = function (value) {
   document.querySelector('.img-upload__preview').style.transform = 'scale(' + (getScaleValue() / 100) + ')';
 };
 
+// Сбрасывает примененые эфеккты до начального значения
 var claerEffects = function () {
   setScale(SCALE_MAX_VALUE);
   setFilter('origin', true);
 };
 
+// Открывет окно редактирования изображения
 var openUploadWindow = function () {
   document.querySelector('.img-upload__overlay').classList.remove('hidden');
   document.querySelector('#upload-cancel').addEventListener('click', closeUploadWindow);
   claerEffects();
 };
 
+// Закрывает окно редактирования изображения
 var closeUploadWindow = function () {
   document.querySelector('.img-upload__overlay').classList.add('hidden');
   document.querySelector('#upload-cancel').removeEventListener('click', closeUploadWindow);
   document.querySelector('#upload-file').value = '';
 };
 
+// ОБработчик onChenge поля загрузки файла
 var uplaodFileChangeHandler = function () {
   openUploadWindow();
 };
 
+// Обработчик onKeydown для документа
 var documentKeydownHandler = function (evt) {
   if (evt.keyCode === ESC_KEY) {
     closeUploadWindow();
@@ -215,25 +227,31 @@ var documentKeydownHandler = function (evt) {
   }
 };
 
+// Обработчик onClick для кнопки увеличения изображения
 var scaleBiggerClickHandler = function () {
   var value = getScaleValue();
   setScale(value + SCALE_STEP);
 };
 
+// Обработчик onClick для кнопки уменьшения изображения
 var scaleSmallerClickHandler = function () {
   var value = getScaleValue();
   setScale(value - SCALE_STEP);
 };
+
+// Вычисляет соотношение положения Pin по отношению к слайдеру
 var getRatio = function (levelElement) {
   var effectLineRect = levelElement.querySelector('.effect-level__line').getBoundingClientRect();
   var effectPinRect = levelElement.querySelector('.effect-level__pin').getBoundingClientRect();
   return ((effectPinRect.x - effectLineRect.x + effectPinRect.width / 2) / effectLineRect.width).toFixed(2);
 };
 
+// Устанавливает значение фильтра для передачи на сервер
 var setEffectValue = function (levelElement, value) {
   levelElement.querySelector('.effect-level__value').value = value;
 };
 
+// Устанавливает фтльтр "Хром"
 var setGrayscale = function (levelElement, previewElement, init) {
   var ratio = 1;
   if (!init) {
@@ -243,6 +261,7 @@ var setGrayscale = function (levelElement, previewElement, init) {
   previewElement.style.filter = 'grayscale(' + ratio + ')';
 };
 
+// Устанавливает фильтр "Сепия"
 var setSepia = function (levelElement, previewElement, init) {
   var ratio = 1;
   if (!init) {
@@ -252,6 +271,7 @@ var setSepia = function (levelElement, previewElement, init) {
   previewElement.style.filter = 'sepia(' + ratio + ')';
 };
 
+// Устанавливает фильтр "Марвин"
 var setInvert = function (levelElement, previewElement, init) {
   var ratio = 1;
   if (!init) {
@@ -261,6 +281,7 @@ var setInvert = function (levelElement, previewElement, init) {
   previewElement.style.filter = 'invert(' + ratio + ')';
 };
 
+// Устанавливает фильтр "Фобос"
 var setBlur = function (levelElement, previewElement, init) {
   var ratio = 1;
   if (!init) {
@@ -271,6 +292,7 @@ var setBlur = function (levelElement, previewElement, init) {
   previewElement.style.filter = 'blur(' + value + 'px)';
 };
 
+// Устанавливает фильтр "Зной"
 var setBrightness = function (levelElement, previewElement, init) {
   var ratio = 1;
   if (!init) {
@@ -281,11 +303,13 @@ var setBrightness = function (levelElement, previewElement, init) {
   previewElement.style.filter = 'brightness(' + value + ')';
 };
 
+// Сбрасывает значения фильтра до оригинального изображения
 var setOrigin = function (levelElement, previewElement) {
   setEffectValue(levelElement, '');
   previewElement.style.filter = '';
 };
 
+// Управляет видимостью слайдера
 var setVisibilityEffectSlider = function (visible) {
   if (visible) {
     document.querySelector('.effect-level').classList.remove('hidden');
@@ -294,6 +318,7 @@ var setVisibilityEffectSlider = function (visible) {
   }
 };
 
+// Устанавлиет текущий фильтер
 var setFilter = function (filterName, init) {
   var effectLevelElement = document.querySelector('.effect-level');
   var previewElement = document.querySelector('.img-upload__preview');
@@ -329,10 +354,12 @@ var setFilter = function (filterName, init) {
   }
 };
 
+// Обработчик события onMouseup слайдера
 var effectLevelMouseupHandler = function () {
   setFilter(document.querySelector('.effects__radio:checked').value, false);
 };
 
+// Обработчик события onChange для inputRadio
 var effectsRadioChangeHandler = function (evt) {
   var target = evt.target;
   if (target.checked) {
@@ -340,12 +367,14 @@ var effectsRadioChangeHandler = function (evt) {
   }
 };
 
+// Добавлеят обработчик onChange для каждого inputRadio
 var initializeEffectsRadio = function () {
   document.querySelectorAll('.effects__radio').forEach(function (value) {
     value.addEventListener('change', effectsRadioChangeHandler);
   });
 };
 
+// #region Свободный код
 document.querySelector('#upload-file').addEventListener('change', uplaodFileChangeHandler);
 document.addEventListener('keydown', documentKeydownHandler);
 document.querySelector('.scale__control--bigger').addEventListener('click', scaleBiggerClickHandler);
@@ -353,3 +382,4 @@ document.querySelector('.scale__control--smaller').addEventListener('click', sca
 var effectLevel = document.querySelector('.effect-level');
 effectLevel.addEventListener('mouseup', effectLevelMouseupHandler);
 initializeEffectsRadio();
+// #endregion
