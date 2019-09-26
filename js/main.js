@@ -189,7 +189,7 @@ var setScale = function (value) {
 
 var claerEffects = function () {
   setScale(SCALE_MAX_VALUE);
-  setFilter('origin',true);
+  setFilter('origin', true);
 };
 
 var openUploadWindow = function () {
@@ -226,12 +226,14 @@ var scaleSmallerClickHandler = function () {
 };
 var getRatio = function (levelElement) {
   var effectLineRect = levelElement.querySelector('.effect-level__line').getBoundingClientRect();
-  var effectPinRect  = levelElement.querySelector('.effect-level__pin').getBoundingClientRect();
+  var effectPinRect = levelElement.querySelector('.effect-level__pin').getBoundingClientRect();
   return ((effectPinRect.x - effectLineRect.x + effectPinRect.width / 2) / effectLineRect.width).toFixed(2);
 };
+
 var setEffectValue = function (levelElement, value) {
   levelElement.querySelector('.effect-level__value').value = value;
-}
+};
+
 var setGrayscale = function (levelElement, previewElement, init) {
   var ratio = 1;
   if (!init) {
@@ -260,11 +262,11 @@ var setInvert = function (levelElement, previewElement, init) {
 };
 
 var setBlur = function (levelElement, previewElement, init) {
-  var ratio = 1 ;
+  var ratio = 1;
   if (!init) {
     ratio = getRatio(levelElement);
   }
-  var value = (BLUR_MIN_VALUE + ratio * (BLUR_MAX_VALUE-BLUR_MIN_VALUE)).toFixed(2);
+  var value = (BLUR_MIN_VALUE + ratio * (BLUR_MAX_VALUE - BLUR_MIN_VALUE)).toFixed(2);
   setEffectValue(levelElement, value);
   previewElement.style.filter = 'blur(' + value + 'px)';
 };
@@ -281,8 +283,8 @@ var setBrightness = function (levelElement, previewElement, init) {
 
 var setOrigin = function (levelElement, previewElement) {
   setEffectValue(levelElement, '');
-  previewElement.style.filter = ''
-}
+  previewElement.style.filter = '';
+};
 
 var setVisibilityEffectSlider = function (visible) {
   if (visible) {
@@ -290,7 +292,7 @@ var setVisibilityEffectSlider = function (visible) {
   } else {
     document.querySelector('.effect-level').classList.add('hidden');
   }
-}
+};
 
 var setFilter = function (filterName, init) {
   var effectLevelElement = document.querySelector('.effect-level');
@@ -327,7 +329,7 @@ var setFilter = function (filterName, init) {
   }
 };
 
-var effectLevelMouseupHandler  = function () {
+var effectLevelMouseupHandler = function () {
   setFilter(document.querySelector('.effects__radio:checked').value, false);
 };
 
@@ -339,7 +341,7 @@ var effectsRadioChangeHandler = function (evt) {
 };
 
 var initializeEffectsRadio = function () {
-  document.querySelectorAll('.effects__radio').forEach(function(value) {
+  document.querySelectorAll('.effects__radio').forEach(function (value) {
     value.addEventListener('change', effectsRadioChangeHandler);
   });
 };
@@ -349,6 +351,5 @@ document.addEventListener('keydown', documentKeydownHandler);
 document.querySelector('.scale__control--bigger').addEventListener('click', scaleBiggerClickHandler);
 document.querySelector('.scale__control--smaller').addEventListener('click', scaleSmallerClickHandler);
 var effectLevel = document.querySelector('.effect-level');
-var effectPin = effectLevel.querySelector('.effect-level__pin');
 effectLevel.addEventListener('mouseup', effectLevelMouseupHandler);
 initializeEffectsRadio();
