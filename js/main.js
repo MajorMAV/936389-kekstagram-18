@@ -383,3 +383,31 @@ var effectLevel = document.querySelector('.effect-level');
 effectLevel.addEventListener('mouseup', effectLevelMouseupHandler);
 initializeEffectsRadio();
 // #endregion
+
+// Валидирует строку с хэштегами
+var validateHashtags = function () {
+  var element = document.querySelector('.text__hashtags');
+  var value = element.value;
+  var hashtags = value.replace(/[ ][ ]+/, ' ').trim().split(' ');
+  var errorHashs = [];
+  // Если первый элемент массива не пустая строка (когда исходная строка непустая)
+  if (hashtags[0]) {
+    hashtags.forEach(function (hash) {
+      var re = /(^#+)([a-z\d-]+$)/;
+      if (!re.test(hash)) {
+        errorHashs.push(hash);
+      }
+    });
+  }
+  if (errorHashs.length > 0) {
+    element.setCustomValidity('Строка содержит невалидные заначения: ' + errorHashs.join(', '));
+  } else {
+    element.setCustomValidity('');
+  }
+};
+
+var uploadSubmitClickHandler = function () {
+  validateHashtags();
+};
+
+document.querySelector('.img-upload__submit').addEventListener('click', uploadSubmitClickHandler);
