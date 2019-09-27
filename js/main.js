@@ -388,22 +388,75 @@ initializeEffectsRadio();
 var validateHashtags = function () {
   var element = document.querySelector('.text__hashtags');
   var value = element.value;
-  var hashtags = value.replace(/[ ][ ]+/, ' ').trim().split(' ');
-  var errorHashs = [];
-  // Если первый элемент массива не пустая строка (когда исходная строка непустая)
+  var hashtags = value.replace(/\s{2,}/, ' ').trim().split(' ');
+  var errors = [];
+  element.setCustomValidity('');
   if (hashtags[0]) {
     hashtags.forEach(function (hash) {
-      var re = /(^#+)([a-z\d-]+$)/;
+      var re = /(^#+)([\wА-Яа-я-=+*&^%$@!~`/|(){}"'\\]+$)/;
       if (!re.test(hash)) {
-        errorHashs.push(hash);
+        errors.push(hash);
       }
     });
   }
-  if (errorHashs.length > 0) {
-    element.setCustomValidity('Строка содержит невалидные заначения: ' + errorHashs.join(', '));
+  if (errors.length > 0) {
+    element.setCustomValidity('Строка содержит невалидные заначения: ' + errors.join(', '));
   } else {
-    element.setCustomValidity('');
+    var error = checkLenghtHashtags(hashtags, element, false);
+    error = checkCountHashtags(hashtags, element, error);
+    checkRepeatHashtags(hashtags, element, error);
   }
+};
+
+var checkLenghtHashtags = function (hashtags, element, error) {
+  if (error) {
+    return error;
+  }
+  var errors = [];
+  hashtags.forEach(function (tag) {
+    if (tag.length > 20) {
+      errors.push(tag);
+    }
+  });
+  if (errors.length > 0) {
+    element.setCustomValidity('Следующие хэштеги превышают длину в 20 символов: ' + errors.join(', '));
+    return true;
+  }
+  return false;
+};
+
+var checkCountHashtags = function (hashtags, element, error) {
+  if (error) {
+    return error;
+  }
+  if (hashtags.length > 5) {
+    element.setCustomValidity('Строка содержит более 5 хэштегов');
+    return true;
+  }
+  return false;
+};
+
+var checkRepeatHashtags = function (hashtags, element, error) {
+  if (error) {
+    return error;
+  }
+  var errors = [];
+  var upperCaseTags = hashtags.map(function (value) {
+    return value.toUpperCase();
+  });
+  upperCaseTags.forEach(function (tag, index, tags) {
+    if (index + 1 < tags.length) {
+      var foundIndex = tags.indexOf(tag, index + 1);
+      if (foundIndex > 0) {
+        errors.push(hashtags[index]);
+      }
+    }
+  });
+  if (errors.length > 0) {
+    element.setCustomValidity('Строка содержит повторяющиеся хэштеги: ' + errors.join(', '));
+    return true;
+  }
+  return false;
 };
 
 var uploadSubmitClickHandler = function () {
