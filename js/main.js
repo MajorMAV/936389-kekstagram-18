@@ -393,7 +393,7 @@ var validateHashtags = function () {
   element.setCustomValidity('');
   if (hashtags[0]) {
     hashtags.forEach(function (hash) {
-      var re = /(^#+)([\wА-Яа-я-=+*&^%$@!~`/|(){}"'\\]+$)/;
+      var re = /(^#+)([\wА-Яа-я-=+*&^%$@!~`/#|(){}№;:?\.,<>_"'\\]+$)/;
       if (!re.test(hash)) {
         errors.push(hash);
       }
