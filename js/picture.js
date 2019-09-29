@@ -8,8 +8,8 @@
   // Заполняет элемент, отображающий фото, данными
   var fillPhotoElement = function (element, data) {
     element.querySelector('.picture__img').src = data.url;
-    element.querySelector('.picture__comments').innerText = data.comments.length;
-    element.querySelector('.picture__likes').innerText = data.likes;
+    element.querySelector('.picture__comments').textContent = data.comments.length;
+    element.querySelector('.picture__likes').textContent = data.likes;
     element.addEventListener('click', window.preview.createPhotoElementHandler(data));
     return element;
   };
