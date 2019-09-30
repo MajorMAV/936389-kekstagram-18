@@ -37,7 +37,7 @@
   // Сбрасывает примененые эфеккты до начального значения
   var claerEffects = function () {
     setScale(SCALE_MAX_VALUE);
-    setFilter('origin', true);
+    setFilter('origin', 0, true);
   };
 
   // Открывет окно редактирования изображения
@@ -79,10 +79,18 @@
   };
 
   // Вычисляет соотношение положения Pin по отношению к слайдеру
-  var getRatio = function (levelElement) {
-    var effectLineRect = levelElement.querySelector('.effect-level__line').getBoundingClientRect();
-    var effectPinRect = levelElement.querySelector('.effect-level__pin').getBoundingClientRect();
-    return ((effectPinRect.x - effectLineRect.x + effectPinRect.width / 2) / effectLineRect.width).toFixed(2);
+  var getRatio = function () {
+    var effectLineRect = effectLine.getBoundingClientRect();
+    var effectPinRect = effectPin.getBoundingClientRect();
+    return ((effectPinRect.left - effectLineRect.left + effectPinRect.width / 2) / effectLineRect.width).toFixed(2);
+  };
+
+  // Выдает min/max  значение для перемещения pin в слайдере
+  var getPinMoveRect = function () {
+    var rect = {};
+    rect.minX = 0;
+    rect.maxX = effectLine.offsetWidth;
+    return rect;
   };
 
   // Устанавливает значение фильтра для передачи на сервер
@@ -151,58 +159,99 @@
   // Управляет видимостью слайдера
   var setVisibilityEffectSlider = function (visible) {
     if (visible) {
-      document.querySelector('.effect-level').classList.remove('hidden');
+      effectLevel.classList.remove('hidden');
     } else {
-      document.querySelector('.effect-level').classList.add('hidden');
+      effectLevel.classList.add('hidden');
     }
   };
 
   // Устанавлиет текущий фильтер
-  var setFilter = function (filterName, init) {
-    var effectLevelElement = document.querySelector('.effect-level');
+  var setFilter = function (filterName, shift, init) {
     var previewElement = document.querySelector('.img-upload__preview');
     switch (filterName) {
       case 'chrome': {
-        setGrayscale(effectLevelElement, previewElement, init);
+        setGrayscale(effectLevel, previewElement, init);
         setVisibilityEffectSlider(true);
+        movePin(shift, init);
         return;
       }
       case 'sepia': {
-        setSepia(effectLevelElement, previewElement, init);
+        setSepia(effectLevel, previewElement, init);
         setVisibilityEffectSlider(true);
+        movePin(shift, init);
         return;
       }
       case 'marvin': {
-        setInvert(effectLevelElement, previewElement, init);
+        setInvert(effectLevel, previewElement, init);
         setVisibilityEffectSlider(true);
+        movePin(shift, init);
         return;
       }
       case 'phobos': {
-        setBlur(effectLevelElement, previewElement, init);
+        setBlur(effectLevel, previewElement, init);
         setVisibilityEffectSlider(true);
+        movePin(shift, init);
         return;
       }
       case 'heat': {
-        setBrightness(effectLevelElement, previewElement, init);
+        setBrightness(effectLevel, previewElement, init);
         setVisibilityEffectSlider(true);
+        movePin(shift, init);
         return;
       }
       default:
-        setOrigin(effectLevelElement, previewElement, init);
+        setOrigin(effectLevel, previewElement, init);
         setVisibilityEffectSlider(false);
+        movePin(shift, init);
     }
   };
 
   // Обработчик события onMouseup слайдера
-  var effectLevelMouseupHandler = function () {
-    setFilter(document.querySelector('.effects__radio:checked').value, false);
+  var effectPinMouseDownHandler = function (evt) {
+    var startPosition = {
+      x: evt.clientX
+    };
+
+    var mouseMoveHandler = function (moveEvt) {
+      moveEvt.preventDefault();
+      var shift = {
+        x: startPosition.x - moveEvt.x
+      };
+
+      startPosition.x = moveEvt.x;
+      setFilter(document.querySelector('.effects__radio:checked').value, shift.x, false);
+    };
+    var mouseUpHandler = function (upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    };
+
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   };
+
+  // Устанавливает позицию pin в слайдере
+  var movePin = function (shiftX, init) {
+    var pinMoveRect = getPinMoveRect();
+    var positionX = effectPin.offsetLeft - shiftX;
+    if (!init) {
+      if (positionX >= pinMoveRect.minX && positionX <= pinMoveRect.maxX) {
+        effectPin.style.left = (effectPin.offsetLeft - shiftX) + 'px';
+        effectDepth.style.width = effectPin.offsetLeft + 'px';
+      }
+    } else {
+      effectPin.style.left = pinMoveRect.maxX + 'px';
+      effectDepth.style.width = effectPin.offsetLeft + 'px';
+    }
+  };
+
 
   // Обработчик события onChange для inputRadio
   var effectsRadioChangeHandler = function (evt) {
     var target = evt.target;
     if (target.checked) {
-      setFilter(target.value, true);
+      setFilter(target.value, 0, true);
     }
   };
 
@@ -236,7 +285,7 @@
       checkRepeatHashtags(hashtags, element, error);
     }
   };
-
+  // Проверяет длину хэштегов
   var checkLenghtHashtags = function (hashtags, element, error) {
     if (error) {
       return error;
@@ -253,7 +302,7 @@
     }
     return false;
   };
-
+  // Проверяет количество хэштегов
   var checkCountHashtags = function (hashtags, element, error) {
     if (error) {
       return error;
@@ -264,7 +313,7 @@
     }
     return false;
   };
-
+  // Проверяет повторение хэштегов
   var checkRepeatHashtags = function (hashtags, element, error) {
     if (error) {
       return error;
@@ -287,17 +336,20 @@
     }
     return false;
   };
-
+  // Обработчик события Submit
   var uploadSubmitClickHandler = function () {
     validateHashtags();
   };
 
+  var effectLevel = document.querySelector('.effect-level');
+  var effectPin = effectLevel.querySelector('.effect-level__pin');
+  var effectLine = effectLevel.querySelector('.effect-level__line');
+  var effectDepth = effectLevel.querySelector('.effect-level__depth');
   document.querySelector('#upload-file').addEventListener('change', uplaodFileChangeHandler);
   document.addEventListener('keydown', documentKeydownHandler);
   document.querySelector('.scale__control--bigger').addEventListener('click', scaleBiggerClickHandler);
   document.querySelector('.scale__control--smaller').addEventListener('click', scaleSmallerClickHandler);
-  var effectLevel = document.querySelector('.effect-level');
-  effectLevel.addEventListener('mouseup', effectLevelMouseupHandler);
+  effectPin.addEventListener('mousedown', effectPinMouseDownHandler);
   initializeEffectsRadio();
   document.querySelector('.img-upload__submit').addEventListener('click', uploadSubmitClickHandler);
 
