@@ -9,6 +9,8 @@
   var BRIGHTNESS_MAX_VALUE = 3;
   var BRIGHTNESS_MIN_VALUE = 1;
 
+  var ORIGIN_PICTURE = 'none';
+
   // Возвращает установленное заначение масштаба для передачи на сервер
   var getScaleValue = function () {
     var scaleInput = document.querySelector('.scale__control--value');
@@ -37,7 +39,7 @@
   // Сбрасывает примененые эфеккты до начального значения
   var claerEffects = function () {
     setScale(SCALE_MAX_VALUE);
-    setFilter('origin', 0, true);
+    window.slider.setVisibilityEffectSlider(false);
   };
 
   // Открывет окно редактирования изображения
@@ -78,180 +80,94 @@
     setScale(value - SCALE_STEP);
   };
 
-  // Вычисляет соотношение положения Pin по отношению к слайдеру
-  var getRatio = function () {
-    var effectLineRect = effectLine.getBoundingClientRect();
-    var effectPinRect = effectPin.getBoundingClientRect();
-    return ((effectPinRect.left - effectLineRect.left + effectPinRect.width / 2) / effectLineRect.width).toFixed(2);
-  };
-
-  // Выдает min/max  значение для перемещения pin в слайдере
-  var getPinMoveRect = function () {
-    var rect = {};
-    rect.minX = 0;
-    rect.maxX = effectLine.offsetWidth;
-    return rect;
-  };
-
   // Устанавливает значение фильтра для передачи на сервер
-  var setEffectValue = function (levelElement, value) {
-    levelElement.querySelector('.effect-level__value').value = value;
+  var setEffectValue = function (value) {
+    effectLevel.querySelector('.effect-level__value').value = value;
   };
 
   // Устанавливает фтльтр "Хром"
-  var setGrayscale = function (levelElement, previewElement, init) {
-    var ratio = 1;
-    if (!init) {
-      ratio = getRatio(levelElement);
-    }
-    setEffectValue(levelElement, ratio);
+  var setGrayscale = function (ratio, previewElement) {
+
+    setEffectValue(ratio);
     previewElement.style.filter = 'grayscale(' + ratio + ')';
   };
 
   // Устанавливает фильтр "Сепия"
-  var setSepia = function (levelElement, previewElement, init) {
-    var ratio = 1;
-    if (!init) {
-      ratio = getRatio(levelElement);
-    }
-    setEffectValue(levelElement, ratio);
+  var setSepia = function (ratio, previewElement) {
+
+    setEffectValue(ratio);
     previewElement.style.filter = 'sepia(' + ratio + ')';
   };
 
   // Устанавливает фильтр "Марвин"
-  var setInvert = function (levelElement, previewElement, init) {
-    var ratio = 1;
-    if (!init) {
-      ratio = getRatio(levelElement);
-    }
-    setEffectValue(levelElement, ratio);
+  var setInvert = function (ratio, previewElement) {
+
+    setEffectValue(ratio);
     previewElement.style.filter = 'invert(' + ratio + ')';
   };
 
   // Устанавливает фильтр "Фобос"
-  var setBlur = function (levelElement, previewElement, init) {
-    var ratio = 1;
-    if (!init) {
-      ratio = getRatio(levelElement);
-    }
+  var setBlur = function (ratio, previewElement) {
+
     var value = (BLUR_MIN_VALUE + ratio * (BLUR_MAX_VALUE - BLUR_MIN_VALUE)).toFixed(2);
-    setEffectValue(levelElement, value);
+    setEffectValue(value);
     previewElement.style.filter = 'blur(' + value + 'px)';
   };
 
   // Устанавливает фильтр "Зной"
-  var setBrightness = function (levelElement, previewElement, init) {
-    var ratio = 1;
-    if (!init) {
-      ratio = getRatio(levelElement);
-    }
+  var setBrightness = function (ratio, previewElement) {
+
     var value = (BRIGHTNESS_MIN_VALUE + ratio * (BRIGHTNESS_MAX_VALUE - BRIGHTNESS_MIN_VALUE)).toFixed(2);
-    setEffectValue(levelElement, value);
+    setEffectValue(value);
     previewElement.style.filter = 'brightness(' + value + ')';
   };
 
   // Сбрасывает значения фильтра до оригинального изображения
-  var setOrigin = function (levelElement, previewElement) {
-    setEffectValue(levelElement, '');
+  var setOrigin = function (previewElement) {
+    setEffectValue('');
     previewElement.style.filter = '';
   };
 
-  // Управляет видимостью слайдера
-  var setVisibilityEffectSlider = function (visible) {
-    if (visible) {
-      effectLevel.classList.remove('hidden');
-    } else {
-      effectLevel.classList.add('hidden');
-    }
-  };
-
   // Устанавлиет текущий фильтер
-  var setFilter = function (filterName, shift, init) {
+  var setFilter = function (ratio) {
     var previewElement = document.querySelector('.img-upload__preview');
+    var filterName = document.querySelector('.effects__radio:checked').value;
     switch (filterName) {
       case 'chrome': {
-        setGrayscale(effectLevel, previewElement, init);
-        setVisibilityEffectSlider(true);
-        movePin(shift, init);
+        setGrayscale(ratio, previewElement);
         return;
       }
       case 'sepia': {
-        setSepia(effectLevel, previewElement, init);
-        setVisibilityEffectSlider(true);
-        movePin(shift, init);
+        setSepia(ratio, previewElement);
         return;
       }
       case 'marvin': {
-        setInvert(effectLevel, previewElement, init);
-        setVisibilityEffectSlider(true);
-        movePin(shift, init);
+        setInvert(ratio, previewElement);
         return;
       }
       case 'phobos': {
-        setBlur(effectLevel, previewElement, init);
-        setVisibilityEffectSlider(true);
-        movePin(shift, init);
+        setBlur(ratio, previewElement);
         return;
       }
       case 'heat': {
-        setBrightness(effectLevel, previewElement, init);
-        setVisibilityEffectSlider(true);
-        movePin(shift, init);
+        setBrightness(ratio, previewElement);
         return;
       }
       default:
-        setOrigin(effectLevel, previewElement, init);
-        setVisibilityEffectSlider(false);
-        movePin(shift, init);
+        setOrigin(previewElement);
+        return;
     }
   };
-
-  // Обработчик события onMouseup слайдера
-  var effectPinMouseDownHandler = function (evt) {
-    var startPosition = {
-      x: evt.clientX
-    };
-
-    var mouseMoveHandler = function (moveEvt) {
-      moveEvt.preventDefault();
-      var shift = {
-        x: startPosition.x - moveEvt.x
-      };
-
-      startPosition.x = moveEvt.x;
-      setFilter(document.querySelector('.effects__radio:checked').value, shift.x, false);
-    };
-    var mouseUpHandler = function (upEvt) {
-      upEvt.preventDefault();
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', mouseUpHandler);
-    };
-
-    document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', mouseUpHandler);
-  };
-
-  // Устанавливает позицию pin в слайдере
-  var movePin = function (shiftX, init) {
-    var pinMoveRect = getPinMoveRect();
-    var positionX = effectPin.offsetLeft - shiftX;
-    if (!init) {
-      if (positionX >= pinMoveRect.minX && positionX <= pinMoveRect.maxX) {
-        effectPin.style.left = (effectPin.offsetLeft - shiftX) + 'px';
-        effectDepth.style.width = effectPin.offsetLeft + 'px';
-      }
-    } else {
-      effectPin.style.left = pinMoveRect.maxX + 'px';
-      effectDepth.style.width = effectPin.offsetLeft + 'px';
-    }
-  };
-
 
   // Обработчик события onChange для inputRadio
   var effectsRadioChangeHandler = function (evt) {
     var target = evt.target;
     if (target.checked) {
-      setFilter(target.value, 0, true);
+      if (target.value === ORIGIN_PICTURE) {
+        window.slider.setVisibilityEffectSlider(false);
+      } else {
+        window.slider.setVisibilityEffectSlider(true);
+      }
     }
   };
 
@@ -342,14 +258,11 @@
   };
 
   var effectLevel = document.querySelector('.effect-level');
-  var effectPin = effectLevel.querySelector('.effect-level__pin');
-  var effectLine = effectLevel.querySelector('.effect-level__line');
-  var effectDepth = effectLevel.querySelector('.effect-level__depth');
   document.querySelector('#upload-file').addEventListener('change', uplaodFileChangeHandler);
   document.addEventListener('keydown', documentKeydownHandler);
   document.querySelector('.scale__control--bigger').addEventListener('click', scaleBiggerClickHandler);
   document.querySelector('.scale__control--smaller').addEventListener('click', scaleSmallerClickHandler);
-  effectPin.addEventListener('mousedown', effectPinMouseDownHandler);
+  window.slider.init(setFilter);
   initializeEffectsRadio();
   document.querySelector('.img-upload__submit').addEventListener('click', uploadSubmitClickHandler);
 
