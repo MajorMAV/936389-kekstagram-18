@@ -63,7 +63,7 @@
 
   // Обработчик onKeydown для документа
   var documentKeydownHandler = function (evt) {
-    if (evt.keyCode === window.utils.ESC_KEY) {
+    if (evt.keyCode === window.utils.ESC_KEY && checkClosingCondition()) {
       closeUploadWindow();
     }
   };
@@ -159,12 +159,18 @@
     }
   };
 
+  // Удаляет css класс фильтра с элемента превью
   var clearPerview = function () {
     previewElement.classList.remove('effects__preview--chrome');
     previewElement.classList.remove('effects__preview--sepia');
     previewElement.classList.remove('effects__preview--marvin');
     previewElement.classList.remove('effects__preview--phobos');
     previewElement.classList.remove('effects__preview--heat');
+  };
+
+  // Проверяет возмозность закрытия окна формы
+  var checkClosingCondition = function () {
+    return !textHashtags.hasFocus && !textDescription.hasFocus;
   };
 
   // Обработчик события onChange для inputRadio
@@ -187,8 +193,7 @@
   };
 
   // Валидирует строку с хэштегами
-  var validateHashtags = function () {
-    var element = document.querySelector('.text__hashtags');
+  var validateHashtags = function (element) {
     var value = element.value;
     var hashtags = value.replace(/\s{2,}/, ' ').trim().split(' ');
     var errors = [];
@@ -262,15 +267,36 @@
   };
   // Обработчик события Submit
   var uploadSubmitClickHandler = function () {
-    validateHashtags();
+    validateHashtags(textHashtags);
+  };
+
+  // Обработчик события focus
+  var elementFocusHandler = function (evt) {
+    evt.target.hasFocus = true;
+  };
+
+  // Обработчик события blur
+  var elementBlurHandler = function (evt) {
+    evt.target.hasFocus = false;
+  };
+
+  // Инициализирует обработчики текстовых полей ввода
+  var initTextElement = function (element) {
+    element.addEventListener('focus', elementFocusHandler);
+    element.addEventListener('blur', elementBlurHandler);
   };
 
   var effectLevel = document.querySelector('.effect-level');
+  var textHashtags = document.querySelector('.text__hashtags');
+  initTextElement(textHashtags);
+  var textDescription = document.querySelector('.text__description');
+  initTextElement(textDescription);
   var previewElement = document.querySelector('.img-upload__preview');
   document.querySelector('#upload-file').addEventListener('change', uplaodFileChangeHandler);
   document.addEventListener('keydown', documentKeydownHandler);
   document.querySelector('.scale__control--bigger').addEventListener('click', scaleBiggerClickHandler);
   document.querySelector('.scale__control--smaller').addEventListener('click', scaleSmallerClickHandler);
+
   window.slider.init(setFilter);
   initializeEffectsRadio();
   document.querySelector('.img-upload__submit').addEventListener('click', uploadSubmitClickHandler);
