@@ -47,6 +47,7 @@
     document.querySelector('.img-upload__overlay').classList.remove('hidden');
     document.querySelector('#upload-cancel').addEventListener('click', closeUploadWindow);
     claerEffects();
+    textHashtags.focus();
   };
 
   // Закрывает окно редактирования изображения
