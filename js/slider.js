@@ -25,10 +25,10 @@
   window.slider.setVisibilityEffectSlider = function (visible) {
     if (visible) {
       effectLevel.classList.remove('hidden');
-      movePin(INIT_FLAG);
     } else {
       effectLevel.classList.add('hidden');
     }
+    movePin(INIT_FLAG);
   };
 
   window.slider.init = function (callback) {

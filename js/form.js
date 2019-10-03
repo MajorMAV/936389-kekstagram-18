@@ -87,28 +87,28 @@
 
   // Устанавливает фтльтр "Хром"
   var setGrayscale = function (ratio, previewElement) {
-
+    previewElement.classList.add('effects__preview--chrome');
     setEffectValue(ratio);
     previewElement.style.filter = 'grayscale(' + ratio + ')';
   };
 
   // Устанавливает фильтр "Сепия"
   var setSepia = function (ratio, previewElement) {
-
+    previewElement.classList.add('effects__preview--sepia');
     setEffectValue(ratio);
     previewElement.style.filter = 'sepia(' + ratio + ')';
   };
 
   // Устанавливает фильтр "Марвин"
   var setInvert = function (ratio, previewElement) {
-
+    previewElement.classList.add('effects__preview--marvin');
     setEffectValue(ratio);
     previewElement.style.filter = 'invert(' + ratio + ')';
   };
 
   // Устанавливает фильтр "Фобос"
   var setBlur = function (ratio, previewElement) {
-
+    previewElement.classList.add('effects__preview--phobos');
     var value = (BLUR_MIN_VALUE + ratio * (BLUR_MAX_VALUE - BLUR_MIN_VALUE)).toFixed(2);
     setEffectValue(value);
     previewElement.style.filter = 'blur(' + value + 'px)';
@@ -116,7 +116,7 @@
 
   // Устанавливает фильтр "Зной"
   var setBrightness = function (ratio, previewElement) {
-
+    previewElement.classList.add('effects__preview--heat');
     var value = (BRIGHTNESS_MIN_VALUE + ratio * (BRIGHTNESS_MAX_VALUE - BRIGHTNESS_MIN_VALUE)).toFixed(2);
     setEffectValue(value);
     previewElement.style.filter = 'brightness(' + value + ')';
@@ -130,8 +130,8 @@
 
   // Устанавлиет текущий фильтер
   var setFilter = function (ratio) {
-    var previewElement = document.querySelector('.img-upload__preview');
     var filterName = document.querySelector('.effects__radio:checked').value;
+    clearPerview();
     switch (filterName) {
       case 'chrome': {
         setGrayscale(ratio, previewElement);
@@ -157,6 +157,14 @@
         setOrigin(previewElement);
         return;
     }
+  };
+
+  var clearPerview = function () {
+    previewElement.classList.remove('effects__preview--chrome');
+    previewElement.classList.remove('effects__preview--sepia');
+    previewElement.classList.remove('effects__preview--marvin');
+    previewElement.classList.remove('effects__preview--phobos');
+    previewElement.classList.remove('effects__preview--heat');
   };
 
   // Обработчик события onChange для inputRadio
@@ -258,6 +266,7 @@
   };
 
   var effectLevel = document.querySelector('.effect-level');
+  var previewElement = document.querySelector('.img-upload__preview');
   document.querySelector('#upload-file').addEventListener('change', uplaodFileChangeHandler);
   document.addEventListener('keydown', documentKeydownHandler);
   document.querySelector('.scale__control--bigger').addEventListener('click', scaleBiggerClickHandler);
