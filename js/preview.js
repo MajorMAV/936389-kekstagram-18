@@ -44,12 +44,14 @@
     bigPictureElement.querySelector('.comments-loader').classList.add('visually-hidden');
     bigPictureElement.classList.remove('hidden');
     bigPictureElement.querySelector('#picture-cancel').addEventListener('click', pictureCancelClickHandler);
+    document.body.classList.add('modal-open');
   };
 
   // Закрывет окно с большой фоткой
   var hiddenBigPicture = function () {
     document.querySelector('.big-picture').classList.add('hidden');
     document.querySelector('#picture-cancel').removeEventListener('click', pictureCancelClickHandler);
+    document.body.classList.remove('modal-open');
   };
 
   // Обработчик onClick для открытия окна с большой фоткой
