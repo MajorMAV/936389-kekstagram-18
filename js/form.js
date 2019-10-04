@@ -47,7 +47,7 @@
     document.querySelector('.img-upload__overlay').classList.remove('hidden');
     document.querySelector('#upload-cancel').addEventListener('click', closeUploadWindow);
     claerEffects();
-    textHashtags.focus();
+    originRadio.focus();
   };
 
   // Закрывает окно редактирования изображения
@@ -288,6 +288,7 @@
   };
 
   var effectLevel = document.querySelector('.effect-level');
+  var originRadio = document.querySelector('input[type=radio][checked]');
   var textHashtags = document.querySelector('.text__hashtags');
   initTextElement(textHashtags);
   var textDescription = document.querySelector('.text__description');
