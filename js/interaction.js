@@ -6,7 +6,7 @@
   var sendRequest = function (options) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    xhr.timeout = 1000;
+    xhr.timeout = 10;
 
     xhr.addEventListener('load', function () {
       var error;
@@ -24,20 +24,20 @@
           error = 'Ничего не найдено';
           break;
         default:
-          error = 'Статус ответа: ' + xhr.status + ' ' +xhr.statusText;
+          error = 'Статус ответа: ' + xhr.status + ' ' + xhr.statusText;
       }
 
       if (error) {
-        options.onError(error);
+        options.onError(error, options.isSimple);
       }
     });
 
     xhr.addEventListener('error', function () {
-      options.onError('Произошла ошибка соединения');
+      options.onError('Произошла ошибка соединения', options.isSimple);
     });
 
     xhr.addEventListener('timeout', function () {
-      options.onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      options.onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс', options.isSimple);
     });
 
     xhr.open(options.method, options.url);
@@ -53,7 +53,8 @@
       method: 'GET',
       url: window.utils.DATA_URL,
       onSuccess: onSuccess,
-      onError: onError
+      onError: onError,
+      isSimple: true
     };
     sendRequest(options);
   };
@@ -63,8 +64,9 @@
       url: form.action,
       data: new FormData(form),
       onSuccess: onSuccess,
-      onError: onError
+      onError: onError,
+      isSipmle: false
     };
     sendRequest(options);
-  }
+  };
 })();

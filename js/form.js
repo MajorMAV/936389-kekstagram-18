@@ -274,13 +274,14 @@
     evt.preventDefault();
     var invalid = validateHashtags(textHashtags);
     if (!invalid) {
-      window.interaction.upload(form, closeUploadWindow, errorHandler);
+      window.interaction.upload(form, successHandler, window.errorWindow.show);
     }
   };
 
-  var errorHandler = function (message) {
-    console.log(message);
-  };
+  var successHandler = function () {
+    window.successWindow.show(closeUploadWindow);
+  }
+
 
   // Обработчик события focus
   var elementFocusHandler = function (evt) {
