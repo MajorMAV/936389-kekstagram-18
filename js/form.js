@@ -280,7 +280,7 @@
 
   var successHandler = function () {
     window.successWindow.show(closeUploadWindow);
-  }
+  };
 
 
   // Обработчик события focus
