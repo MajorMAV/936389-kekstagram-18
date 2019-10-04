@@ -18,7 +18,7 @@
       closeSuccessWindow();
       evt.stopPropagation();
     });
-    element.addEventListener('click', function (evt) {
+    element.querySelector('.success__inner').addEventListener('click', function (evt) {
       evt.stopPropagation();
     });
 

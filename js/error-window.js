@@ -24,7 +24,7 @@
           evt.preventDefault();
         });
       });
-      element.addEventListener('click', function (evt) {
+      element.querySelector('.error__inner').addEventListener('click', function (evt) {
         evt.stopPropagation();
       });
     }
