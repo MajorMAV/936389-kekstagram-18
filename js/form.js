@@ -198,6 +198,7 @@
     var value = element.value;
     var hashtags = value.replace(/\s{2,}/, ' ').trim().split(' ');
     var errors = [];
+    var haveError = false;
     element.setCustomValidity('');
     if (hashtags[0]) {
       hashtags.forEach(function (hash) {
@@ -209,11 +210,13 @@
     }
     if (errors.length > 0) {
       element.setCustomValidity('Строка содержит невалидные заначения: ' + errors.join(', '));
+      haveError = true;
     } else {
-      var error = checkLenghtHashtags(hashtags, element, false);
-      error = checkCountHashtags(hashtags, element, error);
-      checkRepeatHashtags(hashtags, element, error);
+      haveError = checkLenghtHashtags(hashtags, element, haveError);
+      haveError = checkCountHashtags(hashtags, element, haveError);
+      checkRepeatHashtags(hashtags, element, haveError);
     }
+    return haveError;
   };
   // Проверяет длину хэштегов
   var checkLenghtHashtags = function (hashtags, element, error) {
@@ -267,8 +270,16 @@
     return false;
   };
   // Обработчик события Submit
-  var uploadSubmitClickHandler = function () {
-    validateHashtags(textHashtags);
+  var uploadSubmitHandler = function (evt) {
+    evt.preventDefault();
+    var invalid = validateHashtags(textHashtags);
+    if (!invalid) {
+      window.interaction.upload(form, closeUploadWindow, errorHandler);
+    }
+  };
+
+  var errorHandler = function (message) {
+    console.log(message);
   };
 
   // Обработчик события focus
@@ -301,6 +312,7 @@
 
   window.slider.init(setFilter);
   initializeEffectsRadio();
-  document.querySelector('.img-upload__submit').addEventListener('click', uploadSubmitClickHandler);
+  var form = document.querySelector('.img-upload__form');
+  form.addEventListener('submit', uploadSubmitHandler);
 
 })();
