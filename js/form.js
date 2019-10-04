@@ -1,9 +1,6 @@
 'use strict';
 (function () {
 
-  var SCALE_MAX_VALUE = 100;
-  var SCALE_MIN_VALUE = 25;
-  var SCALE_STEP = 25;
   var BLUR_MAX_VALUE = 3;
   var BLUR_MIN_VALUE = 0;
   var BRIGHTNESS_MAX_VALUE = 3;
@@ -11,34 +8,9 @@
 
   var ORIGIN_PICTURE = 'none';
 
-  // Возвращает установленное заначение масштаба для передачи на сервер
-  var getScaleValue = function () {
-    var scaleInput = document.querySelector('.scale__control--value');
-    var scaleValue = Number(scaleInput.value.replace('%', ''));
-    if (!scaleValue) {
-      scaleValue = SCALE_MAX_VALUE;
-      scaleInput.value = SCALE_MAX_VALUE + '%';
-    }
-    return scaleValue;
-  };
-
-  // Устанавливает значение масштаба для передачи на сервер
-  var setScaleValue = function (value) {
-    document.querySelector('.scale__control--value').value = value + '%';
-  };
-
-  // Устанавливает масштабирование
-  var setScale = function (value) {
-    if (value < SCALE_MIN_VALUE || value > SCALE_MAX_VALUE) {
-      return;
-    }
-    setScaleValue(value);
-    document.querySelector('.img-upload__preview').style.transform = 'scale(' + (getScaleValue() / 100) + ')';
-  };
-
   // Сбрасывает примененые эфеккты до начального значения
   var claerEffects = function () {
-    setScale(SCALE_MAX_VALUE);
+    window.scale.clear();
     window.slider.setVisibilityEffectSlider(false);
   };
 
@@ -67,18 +39,6 @@
     if (evt.keyCode === window.utils.ESC_KEY && checkClosingCondition()) {
       closeUploadWindow();
     }
-  };
-
-  // Обработчик onClick для кнопки увеличения изображения
-  var scaleBiggerClickHandler = function () {
-    var value = getScaleValue();
-    setScale(value + SCALE_STEP);
-  };
-
-  // Обработчик onClick для кнопки уменьшения изображения
-  var scaleSmallerClickHandler = function () {
-    var value = getScaleValue();
-    setScale(value - SCALE_STEP);
   };
 
   // Устанавливает значение фильтра для передачи на сервер
@@ -282,34 +242,17 @@
     window.successWindow.show(closeUploadWindow);
   };
 
-
-  // Обработчик события focus
-  var elementFocusHandler = function (evt) {
-    evt.target.hasFocus = true;
-  };
-
-  // Обработчик события blur
-  var elementBlurHandler = function (evt) {
-    evt.target.hasFocus = false;
-  };
-
-  // Инициализирует обработчики текстовых полей ввода
-  var initTextElement = function (element) {
-    element.addEventListener('focus', elementFocusHandler);
-    element.addEventListener('blur', elementBlurHandler);
-  };
-
   var effectLevel = document.querySelector('.effect-level');
   var originRadio = document.querySelector('input[type=radio][checked]');
   var textHashtags = document.querySelector('.text__hashtags');
-  initTextElement(textHashtags);
+  window.utils.trackFocus(textHashtags);
   var textDescription = document.querySelector('.text__description');
-  initTextElement(textDescription);
+  window.utils.trackFocus(textDescription);
   var previewElement = document.querySelector('.img-upload__preview');
+  var scaleElement = document.querySelector('.scale');
+  window.scale.init(scaleElement, previewElement);
   document.querySelector('#upload-file').addEventListener('change', uplaodFileChangeHandler);
   document.addEventListener('keydown', documentKeydownHandler);
-  document.querySelector('.scale__control--bigger').addEventListener('click', scaleBiggerClickHandler);
-  document.querySelector('.scale__control--smaller').addEventListener('click', scaleSmallerClickHandler);
 
   window.slider.init(setFilter);
   initializeEffectsRadio();
