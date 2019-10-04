@@ -8,26 +8,22 @@
   var template = document.querySelector('#error').content.querySelector('.error');
   var main = document.querySelector('main');
   var element;
-  window.errorWindow.show = function (message, isSimple) {
+  window.errorWindow.show = function (message) {
     element = template.cloneNode(true);
     element.style.zIndex = 5;
     element.querySelector('.error__title').textContent = message;
     var buttons = element.querySelectorAll('.error__button');
-    if (isSimple) {
-      buttons.forEach(function (item) {
-        item.style.display = 'none';
+
+    buttons.forEach(function (item) {
+      item.addEventListener('click', function (evt) {
+        closeErrorWindow();
+        evt.preventDefault();
       });
-    } else {
-      buttons.forEach(function (item) {
-        item.addEventListener('click', function (evt) {
-          closeErrorWindow();
-          evt.preventDefault();
-        });
-      });
-      element.querySelector('.error__inner').addEventListener('click', function (evt) {
-        evt.stopPropagation();
-      });
-    }
+    });
+    element.querySelector('.error__inner').addEventListener('click', function (evt) {
+      evt.stopPropagation();
+    });
+
 
     main.insertBefore(element, main.children[0]);
     document.addEventListener('keydown', keydownHandler);

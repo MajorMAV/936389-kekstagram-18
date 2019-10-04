@@ -28,16 +28,16 @@
       }
 
       if (error) {
-        options.onError(error, options.isSimple);
+        options.onError(error);
       }
     });
 
     xhr.addEventListener('error', function () {
-      options.onError('Произошла ошибка соединения', options.isSimple);
+      options.onError('Произошла ошибка соединения');
     });
 
     xhr.addEventListener('timeout', function () {
-      options.onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс', options.isSimple);
+      options.onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
     xhr.open(options.method, options.url);
@@ -53,8 +53,7 @@
       method: 'GET',
       url: window.utils.DATA_URL,
       onSuccess: onSuccess,
-      onError: onError,
-      isSimple: true
+      onError: onError
     };
     sendRequest(options);
   };
@@ -64,8 +63,7 @@
       url: form.action,
       data: new FormData(form),
       onSuccess: onSuccess,
-      onError: onError,
-      isSipmle: false
+      onError: onError
     };
     sendRequest(options);
   };
