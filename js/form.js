@@ -11,11 +11,14 @@
   var uploadOverlay = document.querySelector('.img-upload__overlay');
   var uploadFile = document.querySelector('#upload-file');
   var form = document.querySelector('.img-upload__form');
+  var uploadSubmit = form.querySelector('.img-upload__submit');
 
   // Сбрасывает примененые эфеккты до начального значения
   var claerEffects = function () {
     window.scale.clear();
     window.slider.setVisibilityEffectSlider(false);
+    textHashtags.value = '';
+    textDescription.value = '';
   };
 
   // Открывет окно редактирования изображения
@@ -72,7 +75,7 @@
     } else {
       haveError = checkLenghtHashtags(hashtags, element, haveError);
       haveError = checkCountHashtags(hashtags, element, haveError);
-      checkRepeatHashtags(hashtags, element, haveError);
+      haveError = checkRepeatHashtags(hashtags, element, haveError);
     }
     return haveError;
   };
@@ -93,6 +96,7 @@
     }
     return false;
   };
+
   // Проверяет количество хэштегов
   var checkCountHashtags = function (hashtags, element, error) {
     if (error) {
@@ -104,6 +108,7 @@
     }
     return false;
   };
+
   // Проверяет повторение хэштегов
   var checkRepeatHashtags = function (hashtags, element, error) {
     if (error) {
@@ -127,11 +132,17 @@
     }
     return false;
   };
+
+  var formatTextDescription = function () {
+    textDescription.value = textDescription.value.replace(/\n/g, ' ');
+  };
+
   // Обработчик события Submit
-  var uploadSubmitHandler = function (evt) {
-    evt.preventDefault();
+  var uploadSubmitClickHandler = function (evt) {
+    formatTextDescription();
     var invalid = validateHashtags(textHashtags);
-    if (!invalid) {
+    if (!invalid && form.checkValidity()) {
+      evt.preventDefault();
       window.interaction.upload(form, successHandler, window.errorWindow.show);
     }
   };
@@ -149,6 +160,6 @@
 
   uploadFile.addEventListener('change', uplaodFileChangeHandler);
   document.addEventListener('keydown', documentKeydownHandler);
-  form.addEventListener('submit', uploadSubmitHandler);
+  uploadSubmit.addEventListener('click', uploadSubmitClickHandler);
 
 })();
