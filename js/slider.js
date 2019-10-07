@@ -2,6 +2,13 @@
 
 (function () {
   var INIT_FLAG = true;
+
+  var callbackAction;
+  var effectLevel = document.querySelector('.effect-level');
+  var effectPin = effectLevel.querySelector('.effect-level__pin');
+  var effectLine = effectLevel.querySelector('.effect-level__line');
+  var effectDepth = effectLevel.querySelector('.effect-level__depth');
+
   if (!window.slider) {
     window.slider = {};
   }
@@ -82,10 +89,5 @@
     }
   };
 
-  var callbackAction;
-  var effectLevel = document.querySelector('.effect-level');
-  var effectPin = effectLevel.querySelector('.effect-level__pin');
-  var effectLine = effectLevel.querySelector('.effect-level__line');
-  var effectDepth = effectLevel.querySelector('.effect-level__depth');
   effectPin.addEventListener('mousedown', effectPinMouseDownHandler);
 })();

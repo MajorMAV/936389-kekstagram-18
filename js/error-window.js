@@ -8,6 +8,7 @@
   var template = document.querySelector('#error').content.querySelector('.error');
   var main = document.querySelector('main');
   var element;
+
   window.errorWindow.show = function (message) {
     element = template.cloneNode(true);
     element.style.zIndex = 5;

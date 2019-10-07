@@ -12,6 +12,7 @@
   var uploadFile = document.querySelector('#upload-file');
   var form = document.querySelector('.img-upload__form');
   var uploadSubmit = form.querySelector('.img-upload__submit');
+  var uploadCancel = document.querySelector('#upload-cancel');
 
   // Сбрасывает примененые эфеккты до начального значения
   var claerEffects = function () {
@@ -24,17 +25,17 @@
   // Открывет окно редактирования изображения
   var openUploadWindow = function () {
     uploadOverlay.classList.remove('hidden');
-    document.querySelector('#upload-cancel').addEventListener('click', closeUploadWindow);
+    uploadCancel.addEventListener('click', closeUploadWindow);
     claerEffects();
     originRadio.focus();
   };
 
   // Закрывает окно редактирования изображения
   var closeUploadWindow = function () {
-    uploadOverlay.classList.add('hidden');
-    document.querySelector('#upload-cancel').removeEventListener('click', closeUploadWindow);
-    uploadFile.value = '';
     claerEffects();
+    uploadOverlay.classList.add('hidden');
+    uploadCancel.removeEventListener('click', closeUploadWindow);
+    uploadFile.value = '';
   };
 
   // ОБработчик onChenge поля загрузки файла
