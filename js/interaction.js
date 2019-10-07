@@ -6,7 +6,7 @@
   var sendRequest = function (options) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    xhr.timeout = 1000;
+    xhr.timeout = 5000;
 
     xhr.addEventListener('load', function () {
       var error;

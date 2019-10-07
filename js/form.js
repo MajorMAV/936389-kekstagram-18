@@ -57,7 +57,7 @@
   // Валидирует строку с хэштегами
   var validateHashtags = function (element) {
     var value = element.value;
-    var hashtags = value.replace(/\s{2,}/, ' ').trim().split(' ');
+    var hashtags = value.replace(/\s{2,}/gi, ' ').trim().split(' ');
     var errors = [];
     var haveError = false;
     element.setCustomValidity('');
