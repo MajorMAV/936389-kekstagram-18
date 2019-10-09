@@ -15,12 +15,11 @@
   };
 
   // Создает и заполняет DocumentFragment
-  window.picture.createPictures = function (template, photos) {
-    var docFragment = document.createDocumentFragment();
+  window.picture.createPictures = function (template, photos, fragment) {
     photos.forEach(function (value) {
       var clone = template.cloneNode(true);
-      docFragment.appendChild(fillPhotoElement(clone, value));
+      fragment.appendChild(fillPhotoElement(clone, value));
     });
-    return docFragment;
+    return fragment;
   };
 })();
