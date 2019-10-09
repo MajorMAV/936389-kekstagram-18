@@ -1,10 +1,12 @@
 'use strict';
 (function () {
   var TIMEOUT = 5000;
-  var OK_STATUS = 200;
-  var BAD_REQUEST_STATUS = 400;
-  var UNAUTHORIZED_STATUS = 401;
-  var NOT_FOUND_STATUS = 404;
+  var Code = {
+    SUCCESS: 200,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    NOT_FOUND: 404
+  };
 
   if (!window.interaction) {
     window.interaction = {};
@@ -18,16 +20,16 @@
     xhr.addEventListener('load', function () {
       var error;
       switch (xhr.status) {
-        case OK_STATUS:
+        case Code.SUCCESS:
           options.onSuccess(xhr.response);
           break;
-        case BAD_REQUEST_STATUS:
+        case Code.BAD_REQUEST:
           error = 'Неверный запрос';
           break;
-        case UNAUTHORIZED_STATUS:
+        case Code.UNAUTHORIZED:
           error = 'Пользователь не авторизован';
           break;
-        case NOT_FOUND_STATUS:
+        case Code.NOT_FOUND:
           error = 'Ничего не найдено';
           break;
         default:
