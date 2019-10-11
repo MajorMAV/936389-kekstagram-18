@@ -1,6 +1,8 @@
 'use strict';
 (function () {
 
+  var VIEW_COMMENT_STEP = 5;
+
   var bigPictureElement = document.querySelector('.big-picture');
   var bigPhoto = bigPictureElement.querySelector('.big-picture__img img');
   var likesCount = bigPictureElement.querySelector('.likes-count');
@@ -10,6 +12,8 @@
   var socialCommentCount = bigPictureElement.querySelector('.social__comment-count');
   var commentsLoader = bigPictureElement.querySelector('.comments-loader');
   var pictureCancel = bigPictureElement.querySelector('#picture-cancel');
+  var commentLoader = bigPictureElement.querySelector('.comments-loader');
+  var commentIterator;
 
   if (!window.preview) {
     window.preview = {};
@@ -36,10 +40,37 @@
     return docFragment;
   };
 
+  var setCommentLoaderVisibility = function (isVisible) {
+    if (isVisible) {
+      commentLoader.classList.remove('visually-hidden');
+    } else {
+      commentLoader.classList.add('visually-hidden');
+    }
+  };
+
   // Наполняем контейнер комментариев
   var fillComments = function (container, comments) {
     container.innerHTML = '';
     container.appendChild(createCommentElements(comments));
+  };
+
+  var createCommentIterator = function (comments) {
+    var startViewCommentIndex = 0;
+    var getCommetPortion = function () {
+      var isEnd = startViewCommentIndex + VIEW_COMMENT_STEP > comments.length;
+      var result;
+      if (isEnd) {
+        result = comments.slice(startViewCommentIndex, comments.length);
+      } else {
+        result = comments.slice(startViewCommentIndex, startViewCommentIndex + VIEW_COMMENT_STEP);
+        startViewCommentIndex += VIEW_COMMENT_STEP;
+      }
+      setCommentLoaderVisibility(!isEnd);
+      return result;
+    };
+    return function () {
+      return getCommetPortion(comments);
+    };
   };
 
   // Показываем большую фотографию
@@ -48,18 +79,24 @@
     likesCount.textContent = photo.likes;
     socialCaption.textContent = photo.description;
     commentsCount.textContent = photo.comments.length;
-    fillComments(socialComments, photo.comments);
+    commentIterator = createCommentIterator(photo.comments);
+    fillComments(socialComments, commentIterator());
     socialCommentCount.classList.add('visually-hidden');
-    commentsLoader.classList.add('visually-hidden');
     bigPictureElement.classList.remove('hidden');
     pictureCancel.addEventListener('click', pictureCancelClickHandler);
+    commentLoader.addEventListener('click', commentLoaderClickHandler);
     document.body.classList.add('modal-open');
+  };
+
+  var commentLoaderClickHandler = function () {
+    fillComments(socialComments, commentIterator());
   };
 
   // Закрывет окно с большой фоткой
   var hiddenBigPicture = function () {
     bigPictureElement.classList.add('hidden');
     pictureCancel.removeEventListener('click', pictureCancelClickHandler);
+    commentsLoader.removeEventListener('click', commentLoaderClickHandler);
     document.body.classList.remove('modal-open');
   };
 

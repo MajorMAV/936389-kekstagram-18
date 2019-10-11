@@ -74,14 +74,14 @@
       element.setCustomValidity('Строка содержит невалидные заначения: ' + errors.join(', '));
       haveError = true;
     } else {
-      haveError = checkLenghtHashtags(hashtags, element, haveError);
+      haveError = checkLengthHashtags(hashtags, element, haveError);
       haveError = checkCountHashtags(hashtags, element, haveError);
       haveError = checkRepeatHashtags(hashtags, element, haveError);
     }
     return haveError;
   };
   // Проверяет длину хэштегов
-  var checkLenghtHashtags = function (hashtags, element, error) {
+  var checkLengthHashtags = function (hashtags, element, error) {
     if (error) {
       return error;
     }

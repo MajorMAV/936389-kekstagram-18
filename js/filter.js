@@ -7,12 +7,23 @@
   var BRIGHTNESS_MAX_VALUE = 3;
   var BRIGHTNESS_MIN_VALUE = 1;
 
-  var ORIGIN_PICTURE = 'none';
-  var CHOME_EFFECT = 'chrome';
-  var SEPIA_EFFECT = 'sepia';
-  var MARVIN_EFFECT = 'marvin';
-  var PHOBOS_EFFECT = 'phobos';
-  var HEAT_EFFECT = 'heat';
+  var Effect = {
+    ORIGIN: 'none',
+    CHOME: 'chrome',
+    SEPIA: 'sepia',
+    MARVIN: 'marvin',
+    PHOBOS: 'phobos',
+    HEAT: 'heat'
+  };
+
+  var effectToClassName = {
+    'none': '',
+    'chrome': 'effects__preview--chrome',
+    'sepai': 'effects__preview--sepia',
+    'marvin': 'effects__preview--marvin',
+    'phobos': 'effects__preview--phobos',
+    'heat': 'effects__preview--heat'
+  };
 
   var effectElement;
   var radioElements;
@@ -30,73 +41,57 @@
 
   // Устанавливает фтльтр "Хром"
   var setGrayscale = function (ratio) {
-    previewElement.classList.add('effects__preview--chrome');
+    previewElement.classList.add(effectToClassName[Effect.CHOME]);
     setEffectValue(ratio);
     previewElement.style.filter = 'grayscale(' + ratio + ')';
-    currentEffect = CHOME_EFFECT;
+    currentEffect = Effect.CHOME;
   };
 
   // Устанавливает фильтр "Сепия"
   var setSepia = function (ratio) {
-    previewElement.classList.add('effects__preview--sepia');
+    previewElement.classList.add(effectToClassName[Effect.SEPIA]);
     setEffectValue(ratio);
     previewElement.style.filter = 'sepia(' + ratio + ')';
-    currentEffect = SEPIA_EFFECT;
+    currentEffect = Effect.SEPIA;
   };
 
   // Устанавливает фильтр "Марвин"
   var setInvert = function (ratio) {
-    previewElement.classList.add('effects__preview--marvin');
+    previewElement.classList.add(effectToClassName[Effect.MARVIN]);
     setEffectValue(ratio);
     previewElement.style.filter = 'invert(' + ratio + ')';
-    currentEffect = MARVIN_EFFECT;
+    currentEffect = Effect.MARVIN;
   };
 
   // Устанавливает фильтр "Фобос"
   var setBlur = function (ratio) {
-    previewElement.classList.add('effects__preview--phobos');
+    previewElement.classList.add(effectToClassName[Effect.PHOBOS]);
     var value = (BLUR_MIN_VALUE + ratio * (BLUR_MAX_VALUE - BLUR_MIN_VALUE)).toFixed(2);
     setEffectValue(value);
     previewElement.style.filter = 'blur(' + value + 'px)';
-    currentEffect = PHOBOS_EFFECT;
+    currentEffect = Effect.PHOBOS;
   };
 
   // Устанавливает фильтр "Зной"
   var setBrightness = function (ratio) {
-    previewElement.classList.add('effects__preview--heat');
+    previewElement.classList.add(effectToClassName[Effect.HEAT]);
     var value = (BRIGHTNESS_MIN_VALUE + ratio * (BRIGHTNESS_MAX_VALUE - BRIGHTNESS_MIN_VALUE)).toFixed(2);
     setEffectValue(value);
     previewElement.style.filter = 'brightness(' + value + ')';
-    currentEffect = HEAT_EFFECT;
+    currentEffect = Effect.HEAT;
   };
 
   // Сбрасывает значения фильтра до оригинального изображения
   var setOrigin = function () {
     setEffectValue('');
     previewElement.style.filter = '';
-    currentEffect = ORIGIN_PICTURE;
+    currentEffect = Effect.ORIGIN;
   };
 
   // Удаляет css класс фильтра с элемента превью
   var clearPerview = function () {
-    switch (currentEffect) {
-      case CHOME_EFFECT:
-        previewElement.classList.remove('effects__preview--chrome');
-        break;
-      case SEPIA_EFFECT:
-        previewElement.classList.remove('effects__preview--sepia');
-        break;
-      case MARVIN_EFFECT:
-        previewElement.classList.remove('effects__preview--marvin');
-        break;
-      case PHOBOS_EFFECT:
-        previewElement.classList.remove('effects__preview--phobos');
-        break;
-      case HEAT_EFFECT:
-        previewElement.classList.remove('effects__preview--heat');
-        break;
-      default:
-        break;
+    if (currentEffect !== Effect.ORIGIN) {
+      previewElement.classList.remove(effectToClassName[currentEffect]);
     }
   };
 
@@ -106,7 +101,7 @@
     if (!target.checked) {
       return;
     }
-    var sliderVisibility = target.value !== ORIGIN_PICTURE;
+    var sliderVisibility = target.value !== Effect.ORIGIN;
     window.slider.setVisibilityEffectSlider(sliderVisibility);
   };
 
@@ -125,23 +120,23 @@
     var filterName = radioElements[checkedIndex].value;
     clearPerview();
     switch (filterName) {
-      case CHOME_EFFECT: {
+      case Effect.CHOME: {
         setGrayscale(ratio);
         return;
       }
-      case SEPIA_EFFECT: {
+      case Effect.SEPIA: {
         setSepia(ratio);
         return;
       }
-      case MARVIN_EFFECT: {
+      case Effect.MARVIN: {
         setInvert(ratio);
         return;
       }
-      case PHOBOS_EFFECT: {
+      case Effect.PHOBOS: {
         setBlur(ratio);
         return;
       }
-      case HEAT_EFFECT: {
+      case Effect.HEAT: {
         setBrightness(ratio);
         return;
       }
