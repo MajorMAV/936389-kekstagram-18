@@ -9,7 +9,7 @@
   var previewElement = document.querySelector('.img-upload__preview');
   var scaleElement = document.querySelector('.scale');
   var uploadOverlay = document.querySelector('.img-upload__overlay');
-  var uploadFile = document.querySelector('#upload-file');
+
   var form = document.querySelector('.img-upload__form');
   var uploadSubmit = form.querySelector('.img-upload__submit');
   var uploadCancel = document.querySelector('#upload-cancel');
@@ -27,6 +27,7 @@
     uploadOverlay.classList.remove('hidden');
     uploadCancel.addEventListener('click', closeUploadWindow);
     claerEffects();
+    setSubmitButtonActive(true);
     originRadio.focus();
   };
 
@@ -35,10 +36,10 @@
     claerEffects();
     uploadOverlay.classList.add('hidden');
     uploadCancel.removeEventListener('click', closeUploadWindow);
-    uploadFile.value = '';
+    chooser.clear();
   };
 
-  // ОБработчик onChenge поля загрузки файла
+  // Обработчик onChange поля загрузки файла
   var uplaodFileChangeHandler = function () {
     openUploadWindow();
   };
@@ -80,6 +81,7 @@
     }
     return haveError;
   };
+
   // Проверяет длину хэштегов
   var checkLengthHashtags = function (hashtags, element, error) {
     if (error) {
@@ -144,13 +146,25 @@
     var invalid = validateHashtags(textHashtags);
     if (!invalid && form.checkValidity()) {
       evt.preventDefault();
-      window.interaction.upload(form, successHandler, window.errorWindow.show);
+      setSubmitButtonActive(false);
+      window.interaction.upload(form, successHandler, errorHandler);
     }
   };
 
   var successHandler = function () {
     window.successWindow.show(closeUploadWindow);
   };
+
+  var errorHandler = function () {
+    window.errorWindow.show();
+    setSubmitButtonActive(true);
+  };
+
+  var setSubmitButtonActive = function (isActive) {
+    uploadSubmit.disabled = !isActive;
+  };
+
+  var chooser = new window.FileChooser(uplaodFileChangeHandler);
 
   window.utils.trackFocus(textDescription);
   window.utils.trackFocus(textHashtags);
@@ -159,7 +173,6 @@
   window.filter.init(effectLevel, radioInputs, previewElement);
   window.slider.init(window.filter.setFilter);
 
-  uploadFile.addEventListener('change', uplaodFileChangeHandler);
   document.addEventListener('keydown', documentKeydownHandler);
   uploadSubmit.addEventListener('click', uploadSubmitClickHandler);
 

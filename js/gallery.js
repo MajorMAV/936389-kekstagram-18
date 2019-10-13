@@ -98,10 +98,11 @@
     return result.slice(0, result.length < count ? result.length : count);
   };
 
-  var swapItems =function (source, indexA, indexB) {
+  var swapItems = function (source, indexA, indexB) {
     var tempItem = source[indexA];
     source[indexA] = source[indexB];
     source[indexB] = tempItem;
-  }
+  };
+
   window.interaction.load(loadPhotos, window.errorWindow.show);
 })();
