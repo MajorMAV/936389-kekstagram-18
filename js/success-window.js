@@ -23,6 +23,7 @@
     });
 
     main.insertBefore(element, main.children[0]);
+    button.focus();
     document.addEventListener('keydown', keydownHandler);
     document.addEventListener('click', clickHandler);
   };

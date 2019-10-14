@@ -25,8 +25,8 @@
       evt.stopPropagation();
     });
 
-
     main.insertBefore(element, main.children[0]);
+    buttons[0].focus();
     document.addEventListener('keydown', keydownHandler);
     document.addEventListener('click', clickHandler);
   };
