@@ -38,7 +38,7 @@
   };
 
   var keydownHandler = function (evt) {
-    if (evt.keyCode === window.utils.ESC_KEY) {
+    if (evt.keyCode === window.utils.KeyCode.ESC) {
       closeErrorWindow();
     }
   };

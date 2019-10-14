@@ -46,7 +46,7 @@
 
   // Обработчик onKeydown для документа
   var documentKeydownHandler = function (evt) {
-    if (evt.keyCode === window.utils.ESC_KEY && checkClosingCondition()) {
+    if (evt.keyCode === window.utils.KeyCode.ESC && checkClosingCondition()) {
       closeUploadWindow();
     }
   };
