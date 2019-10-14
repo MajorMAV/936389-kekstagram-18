@@ -139,6 +139,7 @@
   var highlightElementError = function (element) {
     element.style.outline = '3px solid red';
   };
+
   var extinguishElementError = function (element) {
     element.style.outline = '';
   };

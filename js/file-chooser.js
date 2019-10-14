@@ -10,6 +10,9 @@
   var FileChooser = function (changeHandler) {
     fileInput.addEventListener('change', function () {
       var file = fileInput.files[0];
+      if (!file) {
+        return;
+      }
       var fileName = file.name.toLowerCase();
 
       var matches = FILE_TYPES.some(function (it) {
@@ -22,14 +25,14 @@
         reader.addEventListener('load', function () {
           previewImg.src = reader.result;
         });
-
         reader.readAsDataURL(file);
-      }
-
-      clearPreview();
-
-      if (changeHandler && typeof (changeHandler) === 'function') {
-        changeHandler();
+        clearPreview();
+        if (changeHandler && typeof (changeHandler) === 'function') {
+          changeHandler();
+        }
+      } else {
+        window.utils.showError('Допустимы только файлы следующих форматов:' + FILE_TYPES.toString());
+        clearInput();
       }
     });
 
