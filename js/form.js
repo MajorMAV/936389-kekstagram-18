@@ -136,26 +136,38 @@
     return false;
   };
 
+  var highlightElementError = function (element) {
+    element.style.outline = '3px solid red';
+  };
+  var extinguishElementError = function (element) {
+    element.style.outline = '';
+  };
+
   var formatTextDescription = function () {
     textDescription.value = textDescription.value.replace(/\n/g, ' ');
   };
 
   // Обработчик события Submit
   var uploadSubmitClickHandler = function (evt) {
+    extinguishElementError(textHashtags);
     formatTextDescription();
     var invalid = validateHashtags(textHashtags);
-    if (!invalid && form.checkValidity()) {
+    if (invalid) {
+      highlightElementError(textHashtags);
+      return;
+    }
+    if (form.checkValidity()) {
       evt.preventDefault();
       setSubmitButtonActive(false);
-      window.interaction.upload(form, successHandler, errorHandler);
+      window.interaction.upload(form, uploadSuccessHandler, uploadErrorHandler);
     }
   };
 
-  var successHandler = function () {
+  var uploadSuccessHandler = function () {
     window.successWindow.show(closeUploadWindow);
   };
 
-  var errorHandler = function () {
+  var uploadErrorHandler = function () {
     window.errorWindow.show();
     setSubmitButtonActive(true);
   };
