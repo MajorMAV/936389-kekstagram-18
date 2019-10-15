@@ -25,8 +25,8 @@
       evt.stopPropagation();
     });
 
-
     main.insertBefore(element, main.children[0]);
+    buttons[0].focus();
     document.addEventListener('keydown', keydownHandler);
     document.addEventListener('click', clickHandler);
   };
@@ -38,7 +38,7 @@
   };
 
   var keydownHandler = function (evt) {
-    if (evt.keyCode === window.utils.ESC_KEY) {
+    if (evt.keyCode === window.utils.KeyCode.ESC) {
       closeErrorWindow();
     }
   };

@@ -89,15 +89,19 @@
   };
 
   var getRandomPhotos = function (photos, count) {
-    var copy = photos.slice();
-    var result = [];
-    var randomIndex = -1;
-    for (var i = 0; i < count; i++) {
-      randomIndex = Math.round(Math.random() * (copy.length - 1));
-      result.push(copy[randomIndex]);
-      copy.splice(randomIndex, 1);
+    var result = photos.slice();
+    // Метод генерации случайной перестановки, алгоритм Фишера-Йетса
+    for (var i = result.length - 1; i > 0; i--) {
+      var randomIndex = Math.round(Math.random() * i);
+      swapItems(result, i, randomIndex);
     }
-    return result;
+    return result.slice(0, result.length < count ? result.length : count);
+  };
+
+  var swapItems = function (source, indexA, indexB) {
+    var tempItem = source[indexA];
+    source[indexA] = source[indexB];
+    source[indexB] = tempItem;
   };
 
   window.interaction.load(loadPhotos, window.errorWindow.show);

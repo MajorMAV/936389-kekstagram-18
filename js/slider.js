@@ -2,6 +2,7 @@
 
 (function () {
   var INIT_FLAG = true;
+  var MOVE_STEP = 3;
 
   var callbackAction;
   var effectLevel = document.querySelector('.effect-level');
@@ -71,6 +72,17 @@
     document.addEventListener('mouseup', mouseUpHandler);
   };
 
+  var keyDownHandler = function (downEvt) {
+    switch (downEvt.keyCode) {
+      case window.utils.KeyCode.ARROW_LEFT:
+        movePin(MOVE_STEP);
+        break;
+      case window.utils.KeyCode.ARROW_RIGHT:
+        movePin(-MOVE_STEP);
+        break;
+    }
+  };
+
   // Устанавливает позицию pin в слайдере
   var movePin = function (shiftX) {
     var pinMoveRect = getPinMoveRect();
@@ -90,4 +102,5 @@
   };
 
   effectPin.addEventListener('mousedown', effectPinMouseDownHandler);
+  effectPin.addEventListener('keydown', keyDownHandler);
 })();

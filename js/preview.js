@@ -13,6 +13,7 @@
   var commentsLoader = bigPictureElement.querySelector('.comments-loader');
   var pictureCancel = bigPictureElement.querySelector('#picture-cancel');
   var commentLoader = bigPictureElement.querySelector('.comments-loader');
+  var socialFooterText = bigPictureElement.querySelector('.social__footer-text');
   var commentIterator;
 
   if (!window.preview) {
@@ -83,6 +84,7 @@
     fillComments(socialComments, commentIterator());
     socialCommentCount.classList.add('visually-hidden');
     bigPictureElement.classList.remove('hidden');
+    socialFooterText.focus();
     pictureCancel.addEventListener('click', pictureCancelClickHandler);
     commentLoader.addEventListener('click', commentLoaderClickHandler);
     document.body.classList.add('modal-open');
@@ -114,7 +116,7 @@
 
   // Обработчик onKeydown для документа
   var documentKeydownHandler = function (evt) {
-    if (evt.keyCode === window.utils.ESC_KEY) {
+    if (evt.keyCode === window.utils.KeyCode.ESC) {
       hiddenBigPicture();
     }
   };
