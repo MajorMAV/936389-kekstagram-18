@@ -74,6 +74,8 @@
     };
   };
 
+  var focusableAll = null;
+  var focusableModal = null;
   // Показываем большую фотографию
   var showBigPicture = function (photo) {
     bigPhoto.src = photo.url;
@@ -88,6 +90,11 @@
     pictureCancel.addEventListener('click', pictureCancelClickHandler);
     commentLoader.addEventListener('click', commentLoaderClickHandler);
     document.body.classList.add('modal-open');
+    focusableAll = new window.FocusController(document.body);
+    focusableAll.refresh();
+    focusableModal = new window.FocusController(bigPictureElement);
+    focusableModal.refresh();
+    focusableAll.deactivate(focusableModal.getElements());
   };
 
   var commentLoaderClickHandler = function () {
@@ -100,6 +107,7 @@
     pictureCancel.removeEventListener('click', pictureCancelClickHandler);
     commentsLoader.removeEventListener('click', commentLoaderClickHandler);
     document.body.classList.remove('modal-open');
+    focusableAll.activate();
   };
 
   // Обработчик onClick для открытия окна с большой фоткой

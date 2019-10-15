@@ -14,6 +14,9 @@
   var uploadSubmit = form.querySelector('.img-upload__submit');
   var uploadCancel = document.querySelector('#upload-cancel');
 
+  var focusableAll = null;
+  var focusableModal = null;
+
   // Сбрасывает примененые эфеккты до начального значения
   var claerEffects = function () {
     window.scale.clear();
@@ -28,6 +31,11 @@
     uploadCancel.addEventListener('click', closeUploadWindow);
     claerEffects();
     setSubmitButtonActive(true);
+    focusableAll = new window.FocusController(document.body);
+    focusableAll.refresh();
+    focusableModal = new window.FocusController(uploadOverlay);
+    focusableModal.refresh();
+    focusableAll.deactivate(focusableModal.getElements());
     originRadio.focus();
   };
 
@@ -37,6 +45,7 @@
     uploadOverlay.classList.add('hidden');
     uploadCancel.removeEventListener('click', closeUploadWindow);
     chooser.clear();
+    focusableAll.activate();
   };
 
   // Обработчик onChange поля загрузки файла
