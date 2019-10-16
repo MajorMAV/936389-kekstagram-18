@@ -165,11 +165,11 @@
   };
 
   var uploadSuccessHandler = function () {
-    window.successWindow.show(closeUploadWindow);
+    window.modalWindow.showSuccess(closeUploadWindow);
   };
 
   var uploadErrorHandler = function () {
-    window.errorWindow.show();
+    window.modalWindow.showError();
     setSubmitButtonActive(true);
   };
 

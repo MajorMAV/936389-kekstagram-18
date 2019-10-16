@@ -104,5 +104,5 @@
     source[indexB] = tempItem;
   };
 
-  window.interaction.load(loadPhotos, window.errorWindow.show);
+  window.interaction.load(loadPhotos, window.modalWindow.showError);
 })();
