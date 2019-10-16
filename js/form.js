@@ -1,41 +1,41 @@
 'use strict';
 (function () {
 
-  var effectLevel = document.querySelector('.effect-level');
-  var originRadio = document.querySelector('input[type=radio][checked]');
-  var radioInputs = document.querySelectorAll('.effects__radio');
-  var textHashtags = document.querySelector('.text__hashtags');
-  var textDescription = document.querySelector('.text__description');
+  var effectLevelElement = document.querySelector('.effect-level');
+  var originRadioElement = document.querySelector('input[type=radio][checked]');
+  var radioInputElements = document.querySelectorAll('.effects__radio');
+  var textHashtagsElement = document.querySelector('.text__hashtags');
+  var textDescriptionElement = document.querySelector('.text__description');
   var previewElement = document.querySelector('.img-upload__preview');
   var scaleElement = document.querySelector('.scale');
-  var uploadOverlay = document.querySelector('.img-upload__overlay');
+  var uploadOverlayElement = document.querySelector('.img-upload__overlay');
 
   var form = document.querySelector('.img-upload__form');
-  var uploadSubmit = form.querySelector('.img-upload__submit');
-  var uploadCancel = document.querySelector('#upload-cancel');
+  var uploadSubmitElement = form.querySelector('.img-upload__submit');
+  var uploadCancelElement = document.querySelector('#upload-cancel');
 
   // Сбрасывает примененые эфеккты до начального значения
   var claerEffects = function () {
     window.scale.clear();
     window.slider.setVisibilityEffectSlider(false);
-    textHashtags.value = '';
-    textDescription.value = '';
+    textHashtagsElement.value = '';
+    textDescriptionElement.value = '';
   };
 
   // Открывет окно редактирования изображения
   var openUploadWindow = function () {
-    uploadOverlay.classList.remove('hidden');
-    uploadCancel.addEventListener('click', closeUploadWindow);
+    uploadOverlayElement.classList.remove('hidden');
+    uploadCancelElement.addEventListener('click', closeUploadWindow);
     claerEffects();
     setSubmitButtonActive(true);
-    originRadio.focus();
+    originRadioElement.focus();
   };
 
   // Закрывает окно редактирования изображения
   var closeUploadWindow = function () {
     claerEffects();
-    uploadOverlay.classList.add('hidden');
-    uploadCancel.removeEventListener('click', closeUploadWindow);
+    uploadOverlayElement.classList.add('hidden');
+    uploadCancelElement.removeEventListener('click', closeUploadWindow);
     chooser.clear();
   };
 
@@ -53,7 +53,7 @@
 
   // Проверяет возмозность закрытия окна формы
   var checkClosingCondition = function () {
-    return !textHashtags.hasFocus && !textDescription.hasFocus;
+    return !textHashtagsElement.hasFocus && !textDescriptionElement.hasFocus;
   };
 
   // Валидирует строку с хэштегами
@@ -145,16 +145,16 @@
   };
 
   var formatTextDescription = function () {
-    textDescription.value = textDescription.value.replace(/\n/g, ' ');
+    textDescriptionElement.value = textDescriptionElement.value.replace(/\n/g, ' ');
   };
 
   // Обработчик события Submit
   var uploadSubmitClickHandler = function (evt) {
-    extinguishElementError(textHashtags);
+    extinguishElementError(textHashtagsElement);
     formatTextDescription();
-    var invalid = validateHashtags(textHashtags);
+    var invalid = validateHashtags(textHashtagsElement);
     if (invalid) {
-      highlightElementError(textHashtags);
+      highlightElementError(textHashtagsElement);
       return;
     }
     if (form.checkValidity()) {
@@ -174,19 +174,19 @@
   };
 
   var setSubmitButtonActive = function (isActive) {
-    uploadSubmit.disabled = !isActive;
+    uploadSubmitElement.disabled = !isActive;
   };
 
   var chooser = new window.FileChooser(uplaodFileChangeHandler);
 
-  window.utils.trackFocus(textDescription);
-  window.utils.trackFocus(textHashtags);
+  window.utils.trackFocus(textDescriptionElement);
+  window.utils.trackFocus(textHashtagsElement);
 
   window.scale.init(scaleElement, previewElement);
-  window.filter.init(effectLevel, radioInputs, previewElement);
+  window.filter.init(effectLevelElement, radioInputElements, previewElement);
   window.slider.init(window.filter.setFilter);
 
   document.addEventListener('keydown', documentKeydownHandler);
-  uploadSubmit.addEventListener('click', uploadSubmitClickHandler);
+  uploadSubmitElement.addEventListener('click', uploadSubmitClickHandler);
 
 })();

@@ -6,7 +6,7 @@
   }
 
   var template = document.querySelector('#success').content.querySelector('.success');
-  var main = document.querySelector('main');
+  var mainElement = document.querySelector('main');
   var element;
   var callbackAction;
   window.successWindow.show = function (callback) {
@@ -22,28 +22,28 @@
       evt.stopPropagation();
     });
 
-    main.insertBefore(element, main.children[0]);
+    mainElement.insertBefore(element, mainElement.children[0]);
     button.focus();
-    document.addEventListener('keydown', keydownHandler);
-    document.addEventListener('click', clickHandler);
+    document.addEventListener('keydown', documentKeydownHandler);
+    document.addEventListener('click', documentClickHandler);
   };
 
   var closeSuccessWindow = function () {
     element.remove();
-    document.removeEventListener('keydown', keydownHandler);
-    document.removeEventListener('click', clickHandler);
+    document.removeEventListener('keydown', documentKeydownHandler);
+    document.removeEventListener('click', documentClickHandler);
     if (callbackAction && (typeof callbackAction) === 'function') {
       callbackAction();
     }
   };
 
-  var keydownHandler = function (evt) {
+  var documentKeydownHandler = function (evt) {
     if (evt.keyCode === window.utils.KeyCode.ESC) {
       closeSuccessWindow();
     }
   };
 
-  var clickHandler = function () {
+  var documentClickHandler = function () {
     closeSuccessWindow();
   };
 })();

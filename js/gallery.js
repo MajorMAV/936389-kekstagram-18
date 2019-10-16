@@ -10,20 +10,20 @@
   };
 
   var template = document.querySelector('#picture').content.querySelector('.picture');
-  var pictures = document.querySelector('.pictures');
-  var filters = document.querySelector('.img-filters');
-  var filterButtons = filters.querySelectorAll('.img-filters__button');
+  var picturesContainerElement = document.querySelector('.pictures');
+  var filtersContainerElement = document.querySelector('.img-filters');
+  var filterButtonElements = filtersContainerElement.querySelectorAll('.img-filters__button');
   var photoObjects;
   var timeoutId;
 
-  var activeFilter = Array.prototype.find.call(filterButtons, function (item) {
+  var activeFilter = Array.prototype.find.call(filterButtonElements, function (item) {
     return item.classList.contains('img-filters__button--active');
   });
-  var backup = document.querySelectorAll('.pictures > *');
+  var backupElements = document.querySelectorAll('.pictures > *');
 
   var loadPhotos = function (photos) {
     photoObjects = photos;
-    filterButtons.forEach(function (item) {
+    filterButtonElements.forEach(function (item) {
       item.addEventListener('click', function (evt) {
         deactivateFilter();
         activeFilter = evt.target;
@@ -34,7 +34,7 @@
         timeoutId = setTimeout(setFilter, TIMEOUT);
       });
     });
-    filters.classList.remove('img-filters--inactive');
+    filtersContainerElement.classList.remove('img-filters--inactive');
     setFilter();
   };
 
@@ -61,31 +61,31 @@
   };
 
   var clearPhotos = function () {
-    pictures.innerHTML = '';
+    picturesContainerElement.innerHTML = '';
   };
 
   var restoreBackup = function () {
     var fragment = document.createDocumentFragment();
-    backup.forEach(function (item) {
+    backupElements.forEach(function (item) {
       fragment.appendChild(item);
     });
     return fragment;
   };
 
   var viewPopularPhotos = function (fragment) {
-    pictures.appendChild(window.picture.createPictures(template, photoObjects, fragment));
+    picturesContainerElement.appendChild(window.picture.createPictures(template, photoObjects, fragment));
   };
 
   var viewRandnomPhotos = function (fragment) {
     var selection = getRandomPhotos(photoObjects, RANDOM_COUNT);
-    pictures.appendChild(window.picture.createPictures(template, selection, fragment));
+    picturesContainerElement.appendChild(window.picture.createPictures(template, selection, fragment));
   };
 
   var viewDiscussedPhotos = function (fragment) {
     var sortedPhotos = photoObjects.slice().sort(function (a, b) {
       return b.comments.length - a.comments.length;
     });
-    pictures.appendChild(window.picture.createPictures(template, sortedPhotos, fragment));
+    picturesContainerElement.appendChild(window.picture.createPictures(template, sortedPhotos, fragment));
   };
 
   var getRandomPhotos = function (photos, count) {

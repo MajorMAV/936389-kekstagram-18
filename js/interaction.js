@@ -12,7 +12,7 @@
     window.interaction = {};
   }
 
-  var sendRequest = function (options) {
+  var sendRequest = function (request) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = TIMEOUT;
@@ -21,7 +21,7 @@
       var error;
       switch (xhr.status) {
         case Code.SUCCESS:
-          options.onSuccess(xhr.response);
+          request.successHandler(xhr.response);
           break;
         case Code.BAD_REQUEST:
           error = 'Неверный запрос';
@@ -37,44 +37,44 @@
       }
 
       if (error) {
-        options.onError(error);
+        request.errorHandler(error);
       }
     });
 
     xhr.addEventListener('error', function () {
-      options.onError('Произошла ошибка соединения');
+      request.errorHandler('Произошла ошибка соединения');
     });
 
     xhr.addEventListener('timeout', function () {
-      options.onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      request.errorHandler('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.open(options.method, options.url);
-    if (options.data) {
-      xhr.send(options.data);
+    xhr.open(request.method, request.url);
+    if (request.data) {
+      xhr.send(request.data);
     } else {
       xhr.send();
     }
   };
 
-  window.interaction.load = function (onSuccess, onError) {
-    var options = {
+  window.interaction.load = function (successHandler, errorHandler) {
+    var loadingRequest = {
       method: 'GET',
       url: window.utils.DATA_URL,
-      onSuccess: onSuccess,
-      onError: onError
+      successHandler: successHandler,
+      errorHandler: errorHandler
     };
-    sendRequest(options);
+    sendRequest(loadingRequest);
   };
 
-  window.interaction.upload = function (form, onSuccess, onError) {
-    var options = {
+  window.interaction.upload = function (form, successHandler, errorHandler) {
+    var uploadingRequest = {
       method: form.method,
       url: form.action,
       data: new FormData(form),
-      onSuccess: onSuccess,
-      onError: onError
+      successHandler: successHandler,
+      errorHandler: errorHandler
     };
-    sendRequest(options);
+    sendRequest(uploadingRequest);
   };
 })();

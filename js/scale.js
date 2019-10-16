@@ -6,7 +6,7 @@
 
   var scaleElement;
   var previewElement;
-  var scaleInput;
+  var scaleInputElement;
 
   if (!window.scale) {
     window.scale = {};
@@ -14,17 +14,17 @@
 
   // Возвращает установленное заначение масштаба для передачи на сервер
   var getScaleValue = function () {
-    var scaleValue = Number(scaleInput.value.replace('%', ''));
+    var scaleValue = Number(scaleInputElement.value.replace('%', ''));
     if (!scaleValue) {
       scaleValue = SCALE_MAX_VALUE;
-      scaleInput.value = SCALE_MAX_VALUE + '%';
+      scaleInputElement.value = SCALE_MAX_VALUE + '%';
     }
     return scaleValue;
   };
 
   // Устанавливает значение масштаба для передачи на сервер
   var setScaleValue = function (value) {
-    scaleInput.value = value + '%';
+    scaleInputElement.value = value + '%';
   };
 
   // Устанавливает масштабирование
@@ -51,7 +51,7 @@
   window.scale.init = function (element, preview) {
     scaleElement = element;
     previewElement = preview;
-    scaleInput = scaleElement.querySelector('.scale__control--value');
+    scaleInputElement = scaleElement.querySelector('.scale__control--value');
     scaleElement.querySelector('.scale__control--bigger').addEventListener('click', scaleBiggerClickHandler);
     scaleElement.querySelector('.scale__control--smaller').addEventListener('click', scaleSmallerClickHandler);
     setScale(SCALE_MAX_VALUE);

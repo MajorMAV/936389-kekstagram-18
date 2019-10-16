@@ -5,10 +5,10 @@
   var MOVE_STEP = 3;
 
   var callbackAction;
-  var effectLevel = document.querySelector('.effect-level');
-  var effectPin = effectLevel.querySelector('.effect-level__pin');
-  var effectLine = effectLevel.querySelector('.effect-level__line');
-  var effectDepth = effectLevel.querySelector('.effect-level__depth');
+  var effectLevelElement = document.querySelector('.effect-level');
+  var effectPinElement = effectLevelElement.querySelector('.effect-level__pin');
+  var effectLineElement = effectLevelElement.querySelector('.effect-level__line');
+  var effectDepthElement = effectLevelElement.querySelector('.effect-level__depth');
 
   if (!window.slider) {
     window.slider = {};
@@ -16,8 +16,8 @@
 
   // Вычисляет соотношение положения Pin по отношению к слайдеру
   var getRatio = function () {
-    var effectLineRect = effectLine.getBoundingClientRect();
-    var effectPinRect = effectPin.getBoundingClientRect();
+    var effectLineRect = effectLineElement.getBoundingClientRect();
+    var effectPinRect = effectPinElement.getBoundingClientRect();
     return ((effectPinRect.left - effectLineRect.left + effectPinRect.width / 2) / effectLineRect.width).toFixed(2);
   };
 
@@ -25,16 +25,16 @@
   var getPinMoveRect = function () {
     var rect = {};
     rect.minX = 0;
-    rect.maxX = effectLine.offsetWidth;
+    rect.maxX = effectLineElement.offsetWidth;
     return rect;
   };
 
   // Управляет видимостью слайдера
   window.slider.setVisibilityEffectSlider = function (visible) {
     if (visible) {
-      effectLevel.classList.remove('hidden');
+      effectLevelElement.classList.remove('hidden');
     } else {
-      effectLevel.classList.add('hidden');
+      effectLevelElement.classList.add('hidden');
     }
     movePin(INIT_FLAG);
   };
@@ -72,7 +72,7 @@
     document.addEventListener('mouseup', mouseUpHandler);
   };
 
-  var keyDownHandler = function (downEvt) {
+  var effectPinKeydownHandler = function (downEvt) {
     switch (downEvt.keyCode) {
       case window.utils.KeyCode.ARROW_LEFT:
         movePin(MOVE_STEP);
@@ -86,21 +86,21 @@
   // Устанавливает позицию pin в слайдере
   var movePin = function (shiftX) {
     var pinMoveRect = getPinMoveRect();
-    var positionX = effectPin.offsetLeft - shiftX;
+    var positionX = effectPinElement.offsetLeft - shiftX;
     if (typeof (shiftX) !== 'boolean') {
       if (positionX >= pinMoveRect.minX && positionX <= pinMoveRect.maxX) {
-        effectPin.style.left = (effectPin.offsetLeft - shiftX) + 'px';
-        effectDepth.style.width = effectPin.offsetLeft + 'px';
+        effectPinElement.style.left = (effectPinElement.offsetLeft - shiftX) + 'px';
+        effectDepthElement.style.width = effectPinElement.offsetLeft + 'px';
       }
     } else {
-      effectPin.style.left = pinMoveRect.maxX + 'px';
-      effectDepth.style.width = effectPin.offsetLeft + 'px';
+      effectPinElement.style.left = pinMoveRect.maxX + 'px';
+      effectDepthElement.style.width = effectPinElement.offsetLeft + 'px';
     }
     if (typeof (callbackAction) === 'function') {
       callbackAction(getRatio());
     }
   };
 
-  effectPin.addEventListener('mousedown', effectPinMouseDownHandler);
-  effectPin.addEventListener('keydown', keyDownHandler);
+  effectPinElement.addEventListener('mousedown', effectPinMouseDownHandler);
+  effectPinElement.addEventListener('keydown', effectPinKeydownHandler);
 })();
