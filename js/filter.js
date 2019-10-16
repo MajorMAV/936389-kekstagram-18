@@ -19,7 +19,7 @@
   var effectToClassName = {
     'none': '',
     'chrome': 'effects__preview--chrome',
-    'sepai': 'effects__preview--sepia',
+    'sepia': 'effects__preview--sepia',
     'marvin': 'effects__preview--marvin',
     'phobos': 'effects__preview--phobos',
     'heat': 'effects__preview--heat'
