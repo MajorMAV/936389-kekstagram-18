@@ -46,7 +46,7 @@
 
   // Обработчик onKeydown для документа
   var documentKeydownHandler = function (evt) {
-    if (evt.keyCode === window.utils.KeyCode.ESC && checkClosingCondition()) {
+    if (window.keyboard.isEscPressed(evt) && checkClosingCondition()) {
       closeUploadWindow();
     }
   };
@@ -179,8 +179,8 @@
 
   var chooser = new window.FileChooser(uplaodFileChangeHandler);
 
-  window.utils.trackFocus(textDescriptionElement);
-  window.utils.trackFocus(textHashtagsElement);
+  window.util.trackFocus(textDescriptionElement);
+  window.util.trackFocus(textHashtagsElement);
 
   window.scale.init(scaleElement, previewElement);
   window.filter.init(effectLevelElement, radioInputElements, previewElement);

@@ -38,7 +38,7 @@
   };
 
   var documetKeydownHandler = function (evt) {
-    if (evt.keyCode === window.utils.KeyCode.ESC) {
+    if (window.keyboard.isEscPressed(evt)) {
       closeErrorWindow();
     }
   };

@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var TIMEOUT = 5000;
+  var DATA_URL = ' https://js.dump.academy/kekstagram/data';
   var Code = {
     SUCCESS: 200,
     BAD_REQUEST: 400,
@@ -60,7 +61,7 @@
   window.interaction.load = function (successHandler, errorHandler) {
     var loadingRequest = {
       method: 'GET',
-      url: window.utils.DATA_URL,
+      url: DATA_URL,
       successHandler: successHandler,
       errorHandler: errorHandler
     };

@@ -31,7 +31,7 @@
           changeHandler();
         }
       } else {
-        window.utils.showError('Допустимы только файлы следующих форматов:' + FILE_TYPES.toString());
+        window.util.showError('Допустимы только файлы следующих форматов:' + FILE_TYPES.toString());
         clearInput();
       }
     });

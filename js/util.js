@@ -1,19 +1,10 @@
 'use strict';
 (function () {
-  if (!window.utils) {
-    window.utils = {};
+  if (!window.util) {
+    window.util = {};
   }
 
-  window.utils.DATA_URL = ' https://js.dump.academy/kekstagram/data';
-
-  window.utils.KeyCode = {
-    ESC: 27,
-    ARROW_LEFT: 37,
-    ARROW_RIGHT: 39
-  };
-
-
-  window.utils.trackFocus = function (element) {
+  window.util.trackFocus = function (element) {
     element.addEventListener('focus', function (evt) {
       evt.target.hasFocus = true;
     });
@@ -22,7 +13,7 @@
     });
   };
 
-  window.utils.showError = function (message) {
+  window.util.showError = function (message) {
     var errorElement = document.createElement('p');
     errorElement.style.position = 'fixed';
     errorElement.style.top = '0';

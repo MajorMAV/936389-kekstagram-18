@@ -38,7 +38,7 @@
   };
 
   var documentKeydownHandler = function (evt) {
-    if (evt.keyCode === window.utils.KeyCode.ESC) {
+    if (window.keyboard.isEscPressed(evt)) {
       closeSuccessWindow();
     }
   };

@@ -73,13 +73,13 @@
   };
 
   var effectPinKeydownHandler = function (downEvt) {
-    switch (downEvt.keyCode) {
-      case window.utils.KeyCode.ARROW_LEFT:
-        movePin(MOVE_STEP);
-        break;
-      case window.utils.KeyCode.ARROW_RIGHT:
-        movePin(-MOVE_STEP);
-        break;
+    if (window.keyboard.isArrowLeftPressed(downEvt)) {
+      movePin(MOVE_STEP);
+      return;
+    }
+    if (window.keyboard.isArrowRightPressed(downEvt)) {
+      movePin(-MOVE_STEP);
+      return;
     }
   };
 
