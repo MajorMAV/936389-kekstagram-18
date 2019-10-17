@@ -28,6 +28,7 @@
   var effectElement;
   var radioElements;
   var previewElement;
+  var originRadioElement;
   var currentEffect;
 
   if (!window.filter) {
@@ -99,11 +100,15 @@
   var initializeEffectsRadio = function () {
     radioElements.forEach(function (item) {
       item.addEventListener('change', effectsRadioChangeHandler);
+      if (item.value === Effect.ORIGIN) {
+        originRadioElement = item;
+      }
     });
+
   };
 
   window.filter.setEffect = function (ratio) {
-    var checkedIndex = Array.prototype.findIndex.call(radioElements, function (item) {
+    var checkedIndex = radioElements.findIndex(function (item) {
       return item.checked;
     });
     var filterName = radioElements[checkedIndex].value;
@@ -137,9 +142,13 @@
 
   window.filter.initialize = function (effect, radios, preview) {
     effectElement = effect;
-    radioElements = radios;
+    radioElements = Array.from(radios);
     previewElement = preview;
     initializeEffectsRadio();
   };
+
+  window.filter.clear = function () {
+    originRadioElement.checked = true;
+  }
 
 })();

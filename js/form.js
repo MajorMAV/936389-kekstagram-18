@@ -16,6 +16,7 @@
 
   var claerEffects = function () {
     window.scale.clear();
+    window.filter.clear();
     window.slider.setVisibility(false);
     textHashtagsElement.value = '';
     textDescriptionElement.value = '';
@@ -23,7 +24,7 @@
 
   var openUploadWindow = function () {
     uploadOverlayElement.classList.remove('hidden');
-    uploadCancelElement.addEventListener('click', closeUploadWindow);
+    uploadCancelElement.addEventListener('click', uploadCancelClickHandler);
     claerEffects();
     setSubmitButtonActive(true);
     originRadioElement.focus();
@@ -32,13 +33,17 @@
   var closeUploadWindow = function () {
     claerEffects();
     uploadOverlayElement.classList.add('hidden');
-    uploadCancelElement.removeEventListener('click', closeUploadWindow);
+    uploadCancelElement.removeEventListener('click', uploadCancelClickHandler);
     chooser.clear();
   };
 
   var uplaodFileChangeHandler = function () {
     openUploadWindow();
   };
+
+  var uploadCancelClickHandler = function () {
+    closeUploadWindow();
+  }
 
   var documentKeydownHandler = function (evt) {
     if (window.keyboard.isEscPressed(evt) && checkClosingCondition()) {
