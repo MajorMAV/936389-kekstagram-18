@@ -149,6 +149,6 @@
 
   window.filter.clear = function () {
     originRadioElement.checked = true;
-  }
+  };
 
 })();

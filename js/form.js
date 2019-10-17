@@ -43,7 +43,7 @@
 
   var uploadCancelClickHandler = function () {
     closeUploadWindow();
-  }
+  };
 
   var documentKeydownHandler = function (evt) {
     if (window.keyboard.isEscPressed(evt) && checkClosingCondition()) {
