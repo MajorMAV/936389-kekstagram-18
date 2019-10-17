@@ -171,9 +171,9 @@
   window.util.trackFocus(textDescriptionElement);
   window.util.trackFocus(textHashtagsElement);
 
-  window.scale.init(scaleElement, previewElement);
-  window.filter.init(effectLevelElement, radioInputElements, previewElement);
-  window.slider.init(window.filter.setEffect);
+  window.scale.initialize(scaleElement, previewElement);
+  window.filter.initialize(effectLevelElement, radioInputElements, previewElement);
+  window.slider.initialize(window.filter.setEffect);
 
   document.addEventListener('keydown', documentKeydownHandler);
   uploadSubmitElement.addEventListener('click', uploadSubmitClickHandler);

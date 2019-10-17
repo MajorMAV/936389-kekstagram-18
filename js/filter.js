@@ -135,7 +135,7 @@
     }
   };
 
-  window.filter.init = function (effect, radios, preview) {
+  window.filter.initialize = function (effect, radios, preview) {
     effectElement = effect;
     radioElements = radios;
     previewElement = preview;

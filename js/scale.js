@@ -47,7 +47,7 @@
     scaleInputElement.defaultValue = value + '%';
   };
 
-  window.scale.init = function (element, preview) {
+  window.scale.initialize = function (element, preview) {
     scaleElement = element;
     previewElement = preview;
     scaleInputElement = scaleElement.querySelector('.scale__control--value');

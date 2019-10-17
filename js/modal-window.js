@@ -14,16 +14,16 @@
   window.modalWindow.showSuccess = function (callback) {
     createElement(successTemplate);
     callbackAction = callback;
-    var buttons = initButtons('.success__button');
-    initInactiveRect('.success__inner');
+    var buttons = initializeButtons('.success__button');
+    initializeInactiveRect('.success__inner');
     initializeWindow(buttons[0]);
   };
 
   window.modalWindow.showError = function (message) {
     createElement(errorTemplate);
     element.querySelector('.error__title').textContent = message;
-    var buttons = initButtons('.error__button');
-    initInactiveRect('.error__inner');
+    var buttons = initializeButtons('.error__button');
+    initializeInactiveRect('.error__inner');
     initializeWindow(buttons[0]);
   };
 
@@ -32,7 +32,7 @@
     element.style.zIndex = 5;
   };
 
-  var initButtons = function (selector) {
+  var initializeButtons = function (selector) {
     var buttonElements = element.querySelectorAll(selector);
     buttonElements.forEach(function (item) {
       item.addEventListener('click', function (evt) {
@@ -43,7 +43,7 @@
     return buttonElements;
   };
 
-  var initInactiveRect = function (selector) {
+  var initializeInactiveRect = function (selector) {
     element.querySelector(selector).addEventListener('click', function (evt) {
       evt.stopPropagation();
     });

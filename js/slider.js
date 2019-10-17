@@ -35,7 +35,7 @@
     movePin();
   };
 
-  window.slider.init = function (callback) {
+  window.slider.initialize = function (callback) {
     callbackAction = callback;
   };
 
@@ -80,8 +80,8 @@
 
   var movePin = function (shiftX) {
     var pinMoveRect = getPinMoveRect();
-    var positionX = effectPinElement.offsetLeft - shiftX;
     if (arguments.length > 0) {
+      var positionX = effectPinElement.offsetLeft - shiftX;
       if (positionX >= pinMoveRect.minX && positionX <= pinMoveRect.maxX) {
         effectPinElement.style.left = (effectPinElement.offsetLeft - shiftX) + 'px';
         effectDepthElement.style.width = effectPinElement.offsetLeft + 'px';
