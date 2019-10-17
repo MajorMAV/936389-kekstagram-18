@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-
+  var EMPTY_STRING = '';
   var effectLevelElement = document.querySelector('.effect-level');
   var originRadioElement = document.querySelector('input[type=radio][checked]');
   var radioInputElements = document.querySelectorAll('.effects__radio');
@@ -61,7 +61,7 @@
     var errors = [];
     var errorExistence = false;
     element.setCustomValidity('');
-    if (hashtags[0]) {
+    if (hashtags[0] !== EMPTY_STRING) {
       hashtags.forEach(function (hash) {
         var re = /(^#+)([\wА-Яа-я-=+*&^%$@!~`/#|(){}№;:?\.,<>_"'\\]+$)/;
         if (!re.test(hash)) {

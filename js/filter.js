@@ -104,7 +104,6 @@
         originRadioElement = item;
       }
     });
-
   };
 
   window.filter.setEffect = function (ratio) {
