@@ -65,9 +65,7 @@
       setCommentLoaderVisibility(!isEnd);
       return result;
     };
-    return function () {
-      return getCommentPortion(comments);
-    };
+    return getCommentPortion;
   };
 
   var showBigPicture = function (photo) {
