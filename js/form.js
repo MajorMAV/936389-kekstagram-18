@@ -17,7 +17,7 @@
   // Сбрасывает примененые эфеккты до начального значения
   var claerEffects = function () {
     window.scale.clear();
-    window.slider.setVisibilityEffectSlider(false);
+    window.slider.setVisibility(false);
     textHashtagsElement.value = '';
     textDescriptionElement.value = '';
   };
@@ -184,7 +184,7 @@
 
   window.scale.init(scaleElement, previewElement);
   window.filter.init(effectLevelElement, radioInputElements, previewElement);
-  window.slider.init(window.filter.setFilter);
+  window.slider.init(window.filter.setEffect);
 
   document.addEventListener('keydown', documentKeydownHandler);
   uploadSubmitElement.addEventListener('click', uploadSubmitClickHandler);

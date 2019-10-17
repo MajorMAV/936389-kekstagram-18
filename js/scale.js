@@ -48,12 +48,17 @@
     setScale(value - SCALE_STEP);
   };
 
+  var setScaleDefaultValue  = function (value) {
+    scaleInputElement.defaultValue = value + '%';
+  }
+
   window.scale.init = function (element, preview) {
     scaleElement = element;
     previewElement = preview;
     scaleInputElement = scaleElement.querySelector('.scale__control--value');
     scaleElement.querySelector('.scale__control--bigger').addEventListener('click', scaleBiggerClickHandler);
     scaleElement.querySelector('.scale__control--smaller').addEventListener('click', scaleSmallerClickHandler);
+    setScaleDefaultValue(SCALE_MAX_VALUE);
     setScale(SCALE_MAX_VALUE);
   };
 

@@ -30,13 +30,13 @@
   };
 
   // Управляет видимостью слайдера
-  window.slider.setVisibilityEffectSlider = function (visible) {
+  window.slider.setVisibility = function (visible) {
     if (visible) {
       effectLevelElement.classList.remove('hidden');
     } else {
       effectLevelElement.classList.add('hidden');
     }
-    movePin(INIT_FLAG);
+    movePin();
   };
 
   window.slider.init = function (callback) {
@@ -44,7 +44,7 @@
   };
 
   window.slider.clear = function () {
-    movePin(INIT_FLAG);
+    movePin();
   };
 
   // Обработчик события onMouseup слайдера
@@ -87,7 +87,7 @@
   var movePin = function (shiftX) {
     var pinMoveRect = getPinMoveRect();
     var positionX = effectPinElement.offsetLeft - shiftX;
-    if (typeof (shiftX) !== 'boolean') {
+    if (arguments.length > 0) {
       if (positionX >= pinMoveRect.minX && positionX <= pinMoveRect.maxX) {
         effectPinElement.style.left = (effectPinElement.offsetLeft - shiftX) + 'px';
         effectDepthElement.style.width = effectPinElement.offsetLeft + 'px';

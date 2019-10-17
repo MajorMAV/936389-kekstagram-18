@@ -23,13 +23,13 @@
     errorElement.style.zIndex = '20';
     errorElement.textContent = message;
 
-    var clearHandlers = function () {
+    var removeHandlers = function () {
       document.removeEventListener('mousedown', documentMousedownHandler);
       document.removeEventListener('keydown', documentKeydownHandler);
     };
 
     var removeErrorElement = function () {
-      clearHandlers();
+      removeHandlers();
       errorElement.remove();
       errorElement = null;
     };

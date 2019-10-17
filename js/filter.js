@@ -102,7 +102,7 @@
       return;
     }
     var sliderVisibility = target.value !== Effect.ORIGIN;
-    window.slider.setVisibilityEffectSlider(sliderVisibility);
+    window.slider.setVisibility(sliderVisibility);
   };
 
   // Добавлеят обработчик onChange для каждого inputRadio
@@ -113,7 +113,7 @@
   };
 
   // Устанавлиет текущий фильтер
-  window.filter.setFilter = function (ratio) {
+  window.filter.setEffect = function (ratio) {
     var checkedIndex = Array.prototype.findIndex.call(radioElements, function (item) {
       return item.checked;
     });
