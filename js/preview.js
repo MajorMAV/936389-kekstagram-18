@@ -57,7 +57,7 @@
   var createCommentIterator = function (comments) {
     var startViewCommentIndex = 0;
     var getCommetPortion = function () {
-      var isEnd = startViewCommentIndex + VIEW_COMMENT_STEP > comments.length;
+      var isEnd = startViewCommentIndex + VIEW_COMMENT_STEP >= comments.length;
       var result;
       if (isEnd) {
         result = comments.slice(startViewCommentIndex, comments.length);
