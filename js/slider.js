@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var INIT_FLAG = true;
   var MOVE_STEP = 3;
 
   var callbackAction;
@@ -14,14 +13,12 @@
     window.slider = {};
   }
 
-  // Вычисляет соотношение положения Pin по отношению к слайдеру
   var getRatio = function () {
     var effectLineRect = effectLineElement.getBoundingClientRect();
     var effectPinRect = effectPinElement.getBoundingClientRect();
     return ((effectPinRect.left - effectLineRect.left + effectPinRect.width / 2) / effectLineRect.width).toFixed(2);
   };
 
-  // Выдает min/max  значение для перемещения pin в слайдере
   var getPinMoveRect = function () {
     var rect = {};
     rect.minX = 0;
@@ -29,7 +26,6 @@
     return rect;
   };
 
-  // Управляет видимостью слайдера
   window.slider.setVisibility = function (visible) {
     if (visible) {
       effectLevelElement.classList.remove('hidden');
@@ -47,7 +43,6 @@
     movePin();
   };
 
-  // Обработчик события onMouseup слайдера
   var effectPinMouseDownHandler = function (evt) {
     var startPosition = {
       x: evt.clientX
@@ -83,7 +78,6 @@
     }
   };
 
-  // Устанавливает позицию pin в слайдере
   var movePin = function (shiftX) {
     var pinMoveRect = getPinMoveRect();
     var positionX = effectPinElement.offsetLeft - shiftX;

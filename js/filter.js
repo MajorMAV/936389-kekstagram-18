@@ -34,12 +34,10 @@
     window.filter = {};
   }
 
-  // Устанавливает значение фильтра для передачи на сервер
   var setEffectValue = function (value) {
     effectElement.querySelector('.effect-level__value').value = value;
   };
 
-  // Устанавливает фтльтр "Хром"
   var setGrayscale = function (ratio) {
     previewElement.classList.add(effectToClassName[Effect.CHOME]);
     setEffectValue(ratio);
@@ -47,7 +45,6 @@
     currentEffect = Effect.CHOME;
   };
 
-  // Устанавливает фильтр "Сепия"
   var setSepia = function (ratio) {
     previewElement.classList.add(effectToClassName[Effect.SEPIA]);
     setEffectValue(ratio);
@@ -55,7 +52,6 @@
     currentEffect = Effect.SEPIA;
   };
 
-  // Устанавливает фильтр "Марвин"
   var setInvert = function (ratio) {
     previewElement.classList.add(effectToClassName[Effect.MARVIN]);
     setEffectValue(ratio);
@@ -63,7 +59,6 @@
     currentEffect = Effect.MARVIN;
   };
 
-  // Устанавливает фильтр "Фобос"
   var setBlur = function (ratio) {
     previewElement.classList.add(effectToClassName[Effect.PHOBOS]);
     var value = (BLUR_MIN_VALUE + ratio * (BLUR_MAX_VALUE - BLUR_MIN_VALUE)).toFixed(2);
@@ -72,7 +67,6 @@
     currentEffect = Effect.PHOBOS;
   };
 
-  // Устанавливает фильтр "Зной"
   var setBrightness = function (ratio) {
     previewElement.classList.add(effectToClassName[Effect.HEAT]);
     var value = (BRIGHTNESS_MIN_VALUE + ratio * (BRIGHTNESS_MAX_VALUE - BRIGHTNESS_MIN_VALUE)).toFixed(2);
@@ -81,21 +75,18 @@
     currentEffect = Effect.HEAT;
   };
 
-  // Сбрасывает значения фильтра до оригинального изображения
   var setOrigin = function () {
     setEffectValue('');
     previewElement.style.filter = '';
     currentEffect = Effect.ORIGIN;
   };
 
-  // Удаляет css класс фильтра с элемента превью
   var clearPerview = function () {
     if (currentEffect !== Effect.ORIGIN) {
       previewElement.classList.remove(effectToClassName[currentEffect]);
     }
   };
 
-  // Обработчик события onChange для inputRadio
   var effectsRadioChangeHandler = function (evt) {
     var target = evt.target;
     if (!target.checked) {
@@ -105,14 +96,12 @@
     window.slider.setVisibility(sliderVisibility);
   };
 
-  // Добавлеят обработчик onChange для каждого inputRadio
   var initializeEffectsRadio = function () {
-    radioElements.forEach(function (value) {
-      value.addEventListener('change', effectsRadioChangeHandler);
+    radioElements.forEach(function (item) {
+      item.addEventListener('change', effectsRadioChangeHandler);
     });
   };
 
-  // Устанавлиет текущий фильтер
   window.filter.setEffect = function (ratio) {
     var checkedIndex = Array.prototype.findIndex.call(radioElements, function (item) {
       return item.checked;

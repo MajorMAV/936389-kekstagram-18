@@ -12,7 +12,6 @@
     window.scale = {};
   }
 
-  // Возвращает установленное заначение масштаба для передачи на сервер
   var getScaleValue = function () {
     var scaleValue = Number(scaleInputElement.value.replace('%', ''));
     if (!scaleValue) {
@@ -22,12 +21,10 @@
     return scaleValue;
   };
 
-  // Устанавливает значение масштаба для передачи на сервер
   var setScaleValue = function (value) {
     scaleInputElement.value = value + '%';
   };
 
-  // Устанавливает масштабирование
   var setScale = function (value) {
     if (value < SCALE_MIN_VALUE || value > SCALE_MAX_VALUE) {
       return;
@@ -36,21 +33,19 @@
     previewElement.style.transform = 'scale(' + (getScaleValue() / 100) + ')';
   };
 
-  // Обработчик onClick для кнопки увеличения изображения
   var scaleBiggerClickHandler = function () {
     var value = getScaleValue();
     setScale(value + SCALE_STEP);
   };
 
-  // Обработчик onClick для кнопки уменьшения изображения
   var scaleSmallerClickHandler = function () {
     var value = getScaleValue();
     setScale(value - SCALE_STEP);
   };
 
-  var setScaleDefaultValue  = function (value) {
+  var setScaleDefaultValue = function (value) {
     scaleInputElement.defaultValue = value + '%';
-  }
+  };
 
   window.scale.init = function (element, preview) {
     scaleElement = element;

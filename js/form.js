@@ -14,7 +14,6 @@
   var uploadSubmitElement = form.querySelector('.img-upload__submit');
   var uploadCancelElement = document.querySelector('#upload-cancel');
 
-  // Сбрасывает примененые эфеккты до начального значения
   var claerEffects = function () {
     window.scale.clear();
     window.slider.setVisibility(false);
@@ -22,7 +21,6 @@
     textDescriptionElement.value = '';
   };
 
-  // Открывет окно редактирования изображения
   var openUploadWindow = function () {
     uploadOverlayElement.classList.remove('hidden');
     uploadCancelElement.addEventListener('click', closeUploadWindow);
@@ -31,7 +29,6 @@
     originRadioElement.focus();
   };
 
-  // Закрывает окно редактирования изображения
   var closeUploadWindow = function () {
     claerEffects();
     uploadOverlayElement.classList.add('hidden');
@@ -39,29 +36,25 @@
     chooser.clear();
   };
 
-  // Обработчик onChange поля загрузки файла
   var uplaodFileChangeHandler = function () {
     openUploadWindow();
   };
 
-  // Обработчик onKeydown для документа
   var documentKeydownHandler = function (evt) {
     if (window.keyboard.isEscPressed(evt) && checkClosingCondition()) {
       closeUploadWindow();
     }
   };
 
-  // Проверяет возмозность закрытия окна формы
   var checkClosingCondition = function () {
     return !textHashtagsElement.hasFocus && !textDescriptionElement.hasFocus;
   };
 
-  // Валидирует строку с хэштегами
   var validateHashtags = function (element) {
     var value = element.value;
     var hashtags = value.replace(/\s{2,}/gi, ' ').trim().split(' ');
     var errors = [];
-    var haveError = false;
+    var errorExistence = false;
     element.setCustomValidity('');
     if (hashtags[0]) {
       hashtags.forEach(function (hash) {
@@ -73,16 +66,15 @@
     }
     if (errors.length > 0) {
       element.setCustomValidity('Строка содержит невалидные заначения: ' + errors.join(', '));
-      haveError = true;
+      errorExistence = true;
     } else {
-      haveError = checkLengthHashtags(hashtags, element, haveError);
-      haveError = checkCountHashtags(hashtags, element, haveError);
-      haveError = checkRepeatHashtags(hashtags, element, haveError);
+      errorExistence = checkLengthHashtags(hashtags, element, errorExistence);
+      errorExistence = checkCountHashtags(hashtags, element, errorExistence);
+      errorExistence = checkRepeatHashtags(hashtags, element, errorExistence);
     }
-    return haveError;
+    return errorExistence;
   };
 
-  // Проверяет длину хэштегов
   var checkLengthHashtags = function (hashtags, element, error) {
     if (error) {
       return error;
@@ -100,7 +92,6 @@
     return false;
   };
 
-  // Проверяет количество хэштегов
   var checkCountHashtags = function (hashtags, element, error) {
     if (error) {
       return error;
@@ -112,7 +103,6 @@
     return false;
   };
 
-  // Проверяет повторение хэштегов
   var checkRepeatHashtags = function (hashtags, element, error) {
     if (error) {
       return error;
@@ -148,7 +138,6 @@
     textDescriptionElement.value = textDescriptionElement.value.replace(/\n/g, ' ');
   };
 
-  // Обработчик события Submit
   var uploadSubmitClickHandler = function (evt) {
     extinguishElementError(textHashtagsElement);
     formatTextDescription();

@@ -19,23 +19,21 @@
     window.preview = {};
   }
 
-  // Создаем элемент для отображение комментария
-  var createCommentElement = function (options) {
+  var createCommentElement = function (source) {
     var item = document.createElement('li');
     item.classList.add('social__comment');
     item.innerHTML = '<img class="social__picture" ' +
-      'src="' + options.avatar + '" ' +
-      'alt="' + options.name + '" ' +
+      'src="' + source.avatar + '" ' +
+      'alt="' + source.name + '" ' +
       'width="35" height="35">' +
-      '<p class="social__text">' + options.message + '</p>';
+      '<p class="social__text">' + source.message + '</p>';
     return item;
   };
 
-  // Создаем список элементов отображения комментариев
   var createCommentElements = function (comments) {
     var docFragment = document.createDocumentFragment();
-    comments.forEach(function (value) {
-      docFragment.appendChild(createCommentElement(value));
+    comments.forEach(function (item) {
+      docFragment.appendChild(createCommentElement(item));
     });
     return docFragment;
   };
@@ -48,7 +46,6 @@
     }
   };
 
-  // Наполняем контейнер комментариев
   var fillComments = function (container, comments) {
     container.innerHTML = '';
     container.appendChild(createCommentElements(comments));
@@ -56,7 +53,7 @@
 
   var createCommentIterator = function (comments) {
     var startViewCommentIndex = 0;
-    var getCommetPortion = function () {
+    var getCommentPortion = function () {
       var isEnd = startViewCommentIndex + VIEW_COMMENT_STEP >= comments.length;
       var result;
       if (isEnd) {
@@ -69,11 +66,10 @@
       return result;
     };
     return function () {
-      return getCommetPortion(comments);
+      return getCommentPortion(comments);
     };
   };
 
-  // Показываем большую фотографию
   var showBigPicture = function (photo) {
     bigPhotoElement.src = photo.url;
     likesCountElement.textContent = photo.likes;
@@ -93,7 +89,6 @@
     fillComments(socialCommentsElement, commentIterator());
   };
 
-  // Закрывет окно с большой фоткой
   var hiddenBigPicture = function () {
     bigPictureElement.classList.add('hidden');
     pictureCancelElement.removeEventListener('click', pictureCancelClickHandler);
@@ -101,19 +96,16 @@
     document.body.classList.remove('modal-open');
   };
 
-  // Обработчик onClick для открытия окна с большой фоткой
   window.preview.createPhotoElementHandler = function (photo) {
     return function () {
       showBigPicture(photo);
     };
   };
 
-  // Обработчик onClick для закрытия окна с большой фоткой
   var pictureCancelClickHandler = function () {
     hiddenBigPicture();
   };
 
-  // Обработчик onKeydown для документа
   var documentKeydownHandler = function (evt) {
     if (window.keyboard.isEscPressed(evt)) {
       hiddenBigPicture();

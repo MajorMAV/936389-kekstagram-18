@@ -5,7 +5,6 @@
     window.picture = {};
   }
 
-  // Заполняет элемент, отображающий фото, данными
   var fillPhotoElement = function (element, data) {
     element.querySelector('.picture__img').src = data.url;
     element.querySelector('.picture__comments').textContent = data.comments.length;
@@ -14,7 +13,6 @@
     return element;
   };
 
-  // Создает и заполняет DocumentFragment
   window.picture.createPictures = function (template, photos, fragment) {
     photos.forEach(function (value) {
       var clone = template.cloneNode(true);
