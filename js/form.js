@@ -10,8 +10,8 @@
   var scaleElement = document.querySelector('.scale');
   var uploadOverlayElement = document.querySelector('.img-upload__overlay');
 
-  var form = document.querySelector('.img-upload__form');
-  var uploadSubmitElement = form.querySelector('.img-upload__submit');
+  var formElement = document.querySelector('.img-upload__form');
+  var uploadSubmitElement = formElement.querySelector('.img-upload__submit');
   var uploadCancelElement = document.querySelector('#upload-cancel');
 
   var claerEffects = function () {
@@ -151,10 +151,10 @@
       highlightElementError(textHashtagsElement);
       return;
     }
-    if (form.checkValidity()) {
+    if (formElement.checkValidity()) {
       evt.preventDefault();
       setSubmitButtonActive(false);
-      window.interaction.upload(form, uploadSuccessHandler, uploadErrorHandler);
+      window.interaction.upload(formElement, uploadSuccessHandler, uploadErrorHandler);
     }
   };
 
