@@ -89,8 +89,7 @@
     if (!target.checked) {
       return;
     }
-    var sliderVisibility = target.value !== Effect.ORIGIN;
-    window.slider.setVisibility(sliderVisibility);
+    window.slider.setVisibility(target.value !== Effect.ORIGIN);
   };
 
   var initializeEffectsRadio = function () {
