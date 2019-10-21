@@ -31,10 +31,6 @@
   var originRadioElement;
   var currentEffect;
 
-  if (!window.filter) {
-    window.filter = {};
-  }
-
   var setEffectValue = function (value) {
     effectElement.querySelector('.effect-level__value').value = value;
   };
@@ -106,7 +102,7 @@
     });
   };
 
-  window.filter.setEffect = function (ratio) {
+  var setFilterEffect = function (ratio) {
     var checkedIndex = radioElements.findIndex(function (item) {
       return item.checked;
     });
@@ -139,15 +135,20 @@
     }
   };
 
-  window.filter.initialize = function (effect, radios, preview) {
+  var initializeFilter = function (effect, radios, preview) {
     effectElement = effect;
     radioElements = Array.from(radios);
     previewElement = preview;
     initializeEffectsRadio();
   };
 
-  window.filter.clear = function () {
+  var clearFilter = function () {
     originRadioElement.checked = true;
   };
 
+  window.filter = {
+    setEffect: setFilterEffect,
+    initialize: initializeFilter,
+    clear: clearFilter
+  };
 })();

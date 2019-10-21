@@ -9,7 +9,7 @@
     DISCUSSED: 'filter-discussed'
   };
 
-  var template = document.querySelector('#picture').content.querySelector('.picture');
+  var templateElement = document.querySelector('#picture').content.querySelector('.picture');
   var picturesContainerElement = document.querySelector('.pictures');
   var filtersContainerElement = document.querySelector('.img-filters');
   var filterButtonElements = filtersContainerElement.querySelectorAll('.img-filters__button');
@@ -73,19 +73,19 @@
   };
 
   var viewPopularPhotos = function (fragment) {
-    picturesContainerElement.appendChild(window.picture.createPictures(template, photoObjects, fragment));
+    picturesContainerElement.appendChild(window.picture.createPictures(templateElement, photoObjects, fragment));
   };
 
   var viewRandnomPhotos = function (fragment) {
     var selection = getRandomPhotos(photoObjects, RANDOM_COUNT);
-    picturesContainerElement.appendChild(window.picture.createPictures(template, selection, fragment));
+    picturesContainerElement.appendChild(window.picture.createPictures(templateElement, selection, fragment));
   };
 
   var viewDiscussedPhotos = function (fragment) {
     var sortedPhotos = photoObjects.slice().sort(function (a, b) {
       return b.comments.length - a.comments.length;
     });
-    picturesContainerElement.appendChild(window.picture.createPictures(template, sortedPhotos, fragment));
+    picturesContainerElement.appendChild(window.picture.createPictures(templateElement, sortedPhotos, fragment));
   };
 
   var getRandomPhotos = function (photos, count) {
