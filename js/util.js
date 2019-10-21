@@ -20,6 +20,10 @@
     errorElement.style.zIndex = '20';
     errorElement.textContent = message;
 
+    document.addEventListener('mousedown', documentMousedownHandler);
+    document.addEventListener('keydown', documentKeydownHandler);
+    document.body.insertBefore(errorElement, document.body.childNodes[0]);
+
     var removeHandlers = function () {
       document.removeEventListener('mousedown', documentMousedownHandler);
       document.removeEventListener('keydown', documentKeydownHandler);
@@ -39,9 +43,6 @@
       removeErrorElement();
     };
 
-    document.addEventListener('mousedown', documentMousedownHandler);
-    document.addEventListener('keydown', documentKeydownHandler);
-    document.body.insertBefore(errorElement, document.body.childNodes[0]);
   };
 
   window.util = {

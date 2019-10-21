@@ -102,13 +102,17 @@
     });
   };
 
-  var setFilterEffect = function (ratio) {
+  var setFilterEffect = function (ratioValue) {
     var checkedIndex = radioElements.findIndex(function (item) {
       return item.checked;
     });
     var filterName = radioElements[checkedIndex].value;
     clearPerview();
-    switch (filterName) {
+    switchFilter(filterName, ratioValue);
+  };
+
+  var switchFilter = function (filter, ratio) {
+    switch (filter) {
       case Effect.CHROME: {
         setGrayscale(ratio);
         return;
