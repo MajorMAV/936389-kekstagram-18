@@ -15,10 +15,6 @@
   var socialFooterTextElement = bigPictureElement.querySelector('.social__footer-text');
   var commentIterator;
 
-  if (!window.preview) {
-    window.preview = {};
-  }
-
   var createCommentElement = function (source) {
     var item = document.createElement('li');
     item.classList.add('social__comment');
@@ -98,7 +94,7 @@
     document.body.classList.remove('modal-open');
   };
 
-  window.preview.createPhotoElementHandler = function (photo) {
+  var createFnc = function (photo) {
     return function () {
       showBigPicture(photo);
     };
@@ -115,4 +111,9 @@
   };
 
   document.addEventListener('keydown', documentKeydownHandler);
+
+  window.preview = {
+    create: createFnc
+  };
+
 })();

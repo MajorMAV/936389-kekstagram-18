@@ -1,10 +1,7 @@
 'use strict';
 (function () {
-  if (!window.util) {
-    window.util = {};
-  }
 
-  window.util.trackFocus = function (element) {
+  var trackFocusFnc = function (element) {
     element.addEventListener('focus', function (evt) {
       evt.target.hasFocus = true;
     });
@@ -13,7 +10,7 @@
     });
   };
 
-  window.util.showError = function (message) {
+  var showErrorFnc = function (message) {
     var errorElement = document.createElement('p');
     errorElement.style.position = 'fixed';
     errorElement.style.top = '0';
@@ -45,6 +42,11 @@
     document.addEventListener('mousedown', documentMousedownHandler);
     document.addEventListener('keydown', documentKeydownHandler);
     document.body.insertBefore(errorElement, document.body.childNodes[0]);
+  };
+
+  window.util = {
+    trackFocus: trackFocusFnc,
+    showError: showErrorFnc
   };
 
 })();

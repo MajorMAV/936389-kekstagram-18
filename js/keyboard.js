@@ -8,20 +8,21 @@
     ARROW_RIGHT: 39
   };
 
-  if (!window.keyboard) {
-    window.keyboard = {};
-  }
-
-  window.keyboard.isEscPressed = function (pressEvt) {
+  var isEscPressedFnc = function (pressEvt) {
     return pressEvt.keyCode === KeyCode.ESC;
   };
 
-  window.keyboard.isArrowLeftPressed = function (pressEvt) {
+  var isArrowLeftPressedFnc = function (pressEvt) {
     return pressEvt.keyCode === KeyCode.ARROW_LEFT;
   };
 
-  window.keyboard.isArrowRightPressed = function (pressEvt) {
+  var isArrowRightPressedFnc = function (pressEvt) {
     return pressEvt.keyCode === KeyCode.ARROW_RIGHT;
   };
 
+  window.keyboard = {
+    isEscPressed: isEscPressedFnc,
+    isArrowLeftPressed: isArrowLeftPressedFnc,
+    isArrowRightPressed: isArrowRightPressedFnc
+  };
 })();

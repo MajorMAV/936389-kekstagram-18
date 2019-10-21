@@ -8,10 +8,6 @@
   var previewElement;
   var scaleInputElement;
 
-  if (!window.scale) {
-    window.scale = {};
-  }
-
   var getScaleValue = function () {
     var scaleValue = Number(scaleInputElement.value.replace('%', ''));
     if (!scaleValue) {
@@ -47,7 +43,7 @@
     scaleInputElement.defaultValue = value + '%';
   };
 
-  window.scale.initialize = function (element, preview) {
+  var initializeScale = function (element, preview) {
     scaleElement = element;
     previewElement = preview;
     scaleInputElement = scaleElement.querySelector('.scale__control--value');
@@ -57,8 +53,12 @@
     setScale(SCALE_MAX_VALUE);
   };
 
-  window.scale.clear = function () {
+  var clearScale = function () {
     setScale(SCALE_MAX_VALUE);
   };
 
+  window.scale = {
+    initialize: initializeScale,
+    clear: clearScale
+  };
 })();

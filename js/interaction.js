@@ -9,10 +9,6 @@
     NOT_FOUND: 404
   };
 
-  if (!window.interaction) {
-    window.interaction = {};
-  }
-
   var sendRequest = function (request) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -58,7 +54,7 @@
     }
   };
 
-  window.interaction.load = function (successHandler, errorHandler) {
+  var loadFnc = function (successHandler, errorHandler) {
     var loadingRequest = {
       method: 'GET',
       url: DATA_URL,
@@ -68,7 +64,7 @@
     sendRequest(loadingRequest);
   };
 
-  window.interaction.upload = function (form, successHandler, errorHandler) {
+  var uploadFnc = function (form, successHandler, errorHandler) {
     var uploadingRequest = {
       method: form.method,
       url: form.action,
@@ -77,5 +73,10 @@
       errorHandler: errorHandler
     };
     sendRequest(uploadingRequest);
+  };
+
+  window.interaction = {
+    load: loadFnc,
+    upload: uploadFnc
   };
 })();

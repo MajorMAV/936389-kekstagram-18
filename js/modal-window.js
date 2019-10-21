@@ -1,17 +1,13 @@
 'use strict';
 
 (function () {
-  if (!window.modalWindow) {
-    window.modalWindow = {};
-  }
-
   var successTemplateElement = document.querySelector('#success').content.querySelector('.success');
   var errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
   var mainElement = document.querySelector('main');
   var element;
   var callbackAction;
 
-  window.modalWindow.showSuccess = function (callback) {
+  var showSuccessFnc = function (callback) {
     createElement(successTemplateElement);
     callbackAction = callback;
     var buttons = initializeButtons('.success__button');
@@ -19,7 +15,7 @@
     initializeWindow(buttons[0]);
   };
 
-  window.modalWindow.showError = function (message) {
+  var showErrorFnc = function (message) {
     createElement(errorTemplateElement);
     element.querySelector('.error__title').textContent = message;
     var buttons = initializeButtons('.error__button');
@@ -76,4 +72,10 @@
   var documentClickHandler = function () {
     closeWindow();
   };
+
+  window.modalWindow = {
+    showError: showErrorFnc,
+    showSuccess: showSuccessFnc
+  };
+
 })();

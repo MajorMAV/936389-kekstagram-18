@@ -16,9 +16,8 @@
   var photoObjects;
   var timeoutId;
 
-  var activeFilter = Array.prototype.find.call(filterButtonElements, function (item) {
-    return item.classList.contains('img-filters__button--active');
-  });
+  var activeFilter = filtersContainerElement.querySelector('.img-filters__button--active');
+
   var backupElements = document.querySelectorAll('.pictures > *');
 
   var loadPhotos = function (photos) {

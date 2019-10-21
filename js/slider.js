@@ -9,10 +9,6 @@
   var effectLineElement = effectLevelElement.querySelector('.effect-level__line');
   var effectDepthElement = effectLevelElement.querySelector('.effect-level__depth');
 
-  if (!window.slider) {
-    window.slider = {};
-  }
-
   var getRatio = function () {
     var effectLineRect = effectLineElement.getBoundingClientRect();
     var effectPinRect = effectPinElement.getBoundingClientRect();
@@ -26,7 +22,7 @@
     return rect;
   };
 
-  window.slider.setVisibility = function (visible) {
+  var setSliderVisibility = function (visible) {
     if (visible) {
       effectLevelElement.classList.remove('hidden');
     } else {
@@ -35,11 +31,11 @@
     movePin();
   };
 
-  window.slider.initialize = function (callback) {
+  var initializeSlider = function (callback) {
     callbackAction = callback;
   };
 
-  window.slider.clear = function () {
+  var clearSlider = function () {
     movePin();
   };
 
@@ -57,6 +53,7 @@
       startPosition.x = moveEvt.x;
       movePin(shift.x);
     };
+
     var mouseUpHandler = function (upEvt) {
       upEvt.preventDefault();
       document.removeEventListener('mousemove', mouseMoveHandler);
@@ -97,4 +94,10 @@
 
   effectPinElement.addEventListener('mousedown', effectPinMouseDownHandler);
   effectPinElement.addEventListener('keydown', effectPinKeydownHandler);
+
+  window.slider = {
+    setVisibility: setSliderVisibility,
+    initialize: initializeSlider,
+    clear: clearSlider
+  };
 })();
