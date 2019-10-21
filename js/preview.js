@@ -46,8 +46,10 @@
     }
   };
 
-  var fillComments = function (container, comments) {
+  var clearCommentsContainer = function(container) {
     container.innerHTML = '';
+  }
+  var fillComments = function (container, comments) {
     container.appendChild(createCommentElements(comments));
   };
 
@@ -74,6 +76,7 @@
     socialCaptionElement.textContent = photo.description;
     commentsCountElement.textContent = photo.comments.length;
     commentIterator = createCommentIterator(photo.comments);
+    clearCommentsContainer(socialCommentsElement);
     fillComments(socialCommentsElement, commentIterator());
     socialCommentCountElement.classList.add('visually-hidden');
     bigPictureElement.classList.remove('hidden');
