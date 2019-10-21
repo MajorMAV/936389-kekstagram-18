@@ -5,14 +5,14 @@
     window.modalWindow = {};
   }
 
-  var successTemplate = document.querySelector('#success').content.querySelector('.success');
-  var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var successTemplateElement = document.querySelector('#success').content.querySelector('.success');
+  var errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
   var mainElement = document.querySelector('main');
   var element;
   var callbackAction;
 
   window.modalWindow.showSuccess = function (callback) {
-    createElement(successTemplate);
+    createElement(successTemplateElement);
     callbackAction = callback;
     var buttons = initializeButtons('.success__button');
     initializeInactiveRect('.success__inner');
@@ -20,7 +20,7 @@
   };
 
   window.modalWindow.showError = function (message) {
-    createElement(errorTemplate);
+    createElement(errorTemplateElement);
     element.querySelector('.error__title').textContent = message;
     var buttons = initializeButtons('.error__button');
     initializeInactiveRect('.error__inner');

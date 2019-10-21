@@ -46,9 +46,10 @@
     }
   };
 
-  var clearCommentsContainer = function(container) {
+  var clearCommentsContainer = function (container) {
     container.innerHTML = '';
-  }
+  };
+
   var fillComments = function (container, comments) {
     container.appendChild(createCommentElements(comments));
   };
