@@ -56,10 +56,26 @@
   };
 
   var validateHashtags = function (element) {
+    var hashtags = checkHashtasExistence(element);
+    if (!hashtags) {
+      return false;
+    }
+    if (checkHashtagsLength(hashtags, element)) {
+      return false;
+    }
+    if (checkHashtagsCount(hashtags, element)) {
+      return false;
+    }
+    if (checkHashtagsRepeat(hashtags, element)) {
+      return false;
+    }
+    return true;
+  };
+
+  var checkHashtasExistence = function (element) {
     var value = element.value;
     var hashtags = value.replace(/\s{2,}/gi, ' ').trim().split(' ');
     var errors = [];
-    var errorExistence = false;
     element.setCustomValidity('');
     if (hashtags[0] !== EMPTY_STRING) {
       hashtags.forEach(function (hash) {
@@ -71,19 +87,12 @@
     }
     if (errors.length > 0) {
       element.setCustomValidity('Строка содержит невалидные заначения: ' + errors.join(', '));
-      errorExistence = true;
-    } else {
-      errorExistence = checkLengthHashtags(hashtags, element, errorExistence);
-      errorExistence = checkCountHashtags(hashtags, element, errorExistence);
-      errorExistence = checkRepeatHashtags(hashtags, element, errorExistence);
+      return null;
     }
-    return errorExistence;
+    return hashtags;
   };
 
-  var checkLengthHashtags = function (hashtags, element, error) {
-    if (error) {
-      return error;
-    }
+  var checkHashtagsLength = function (hashtags, element) {
     var errors = [];
     hashtags.forEach(function (tag) {
       if (tag.length > 20) {
@@ -97,10 +106,7 @@
     return false;
   };
 
-  var checkCountHashtags = function (hashtags, element, error) {
-    if (error) {
-      return error;
-    }
+  var checkHashtagsCount = function (hashtags, element) {
     if (hashtags.length > 5) {
       element.setCustomValidity('Строка содержит более 5 хэштегов');
       return true;
@@ -108,10 +114,7 @@
     return false;
   };
 
-  var checkRepeatHashtags = function (hashtags, element, error) {
-    if (error) {
-      return error;
-    }
+  var checkHashtagsRepeat = function (hashtags, element) {
     var errors = [];
     var upperCaseTags = hashtags.map(function (value) {
       return value.toUpperCase();
@@ -146,8 +149,7 @@
   var uploadSubmitClickHandler = function (evt) {
     extinguishElementError(textHashtagsElement);
     formatTextDescription();
-    var invalid = validateHashtags(textHashtagsElement);
-    if (invalid) {
+    if (!validateHashtags(textHashtagsElement)) {
       highlightElementError(textHashtagsElement);
       return;
     }

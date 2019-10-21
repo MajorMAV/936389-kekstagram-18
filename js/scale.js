@@ -30,13 +30,11 @@
   };
 
   var scaleBiggerClickHandler = function () {
-    var value = getScaleValue();
-    setScale(value + SCALE_STEP);
+    setScale(getScaleValue() + SCALE_STEP);
   };
 
   var scaleSmallerClickHandler = function () {
-    var value = getScaleValue();
-    setScale(value - SCALE_STEP);
+    setScale(getScaleValue() - SCALE_STEP);
   };
 
   var setScaleDefaultValue = function (value) {
