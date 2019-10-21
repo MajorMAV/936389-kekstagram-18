@@ -14,7 +14,7 @@
   var uploadSubmitElement = formElement.querySelector('.img-upload__submit');
   var uploadCancelElement = document.querySelector('#upload-cancel');
 
-  var claerEffects = function () {
+  var clearEffects = function () {
     window.scale.clear();
     window.filter.clear();
     window.slider.setVisibility(false);
@@ -25,19 +25,19 @@
   var openUploadWindow = function () {
     uploadOverlayElement.classList.remove('hidden');
     uploadCancelElement.addEventListener('click', uploadCancelClickHandler);
-    claerEffects();
+    clearEffects();
     setSubmitButtonActive(true);
     originRadioElement.focus();
   };
 
   var closeUploadWindow = function () {
-    claerEffects();
+    clearEffects();
     uploadOverlayElement.classList.add('hidden');
     uploadCancelElement.removeEventListener('click', uploadCancelClickHandler);
     chooser.clear();
   };
 
-  var uplaodFileChangeHandler = function () {
+  var uploadFileChangeHandler = function () {
     openUploadWindow();
   };
 
@@ -171,7 +171,7 @@
     uploadSubmitElement.disabled = !isActive;
   };
 
-  var chooser = new window.FileChooser(uplaodFileChangeHandler);
+  var chooser = new window.FileChooser(uploadFileChangeHandler);
 
   window.util.trackFocus(textDescriptionElement);
   window.util.trackFocus(textHashtagsElement);

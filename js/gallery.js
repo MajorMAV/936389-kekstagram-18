@@ -52,7 +52,7 @@
         viewPopularPhotos(backupFragment);
         break;
       case FilterId.RANDOM:
-        viewRandnomPhotos(backupFragment);
+        viewRandomPhotos(backupFragment);
         break;
       case FilterId.DISCUSSED:
         viewDiscussedPhotos(backupFragment);
@@ -76,7 +76,7 @@
     picturesContainerElement.appendChild(window.picture.createPictures(templateElement, photoObjects, fragment));
   };
 
-  var viewRandnomPhotos = function (fragment) {
+  var viewRandomPhotos = function (fragment) {
     var selection = getRandomPhotos(photoObjects, RANDOM_COUNT);
     picturesContainerElement.appendChild(window.picture.createPictures(templateElement, selection, fragment));
   };

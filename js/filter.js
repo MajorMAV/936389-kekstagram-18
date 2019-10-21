@@ -9,7 +9,7 @@
 
   var Effect = {
     ORIGIN: 'none',
-    CHOME: 'chrome',
+    CHROME: 'chrome',
     SEPIA: 'sepia',
     MARVIN: 'marvin',
     PHOBOS: 'phobos',
@@ -36,10 +36,10 @@
   };
 
   var setGrayscale = function (ratio) {
-    previewElement.classList.add(effectToClassName[Effect.CHOME]);
+    previewElement.classList.add(effectToClassName[Effect.CHROME]);
     setEffectValue(ratio);
     previewElement.style.filter = 'grayscale(' + ratio + ')';
-    currentEffect = Effect.CHOME;
+    currentEffect = Effect.CHROME;
   };
 
   var setSepia = function (ratio) {
@@ -109,7 +109,7 @@
     var filterName = radioElements[checkedIndex].value;
     clearPerview();
     switch (filterName) {
-      case Effect.CHOME: {
+      case Effect.CHROME: {
         setGrayscale(ratio);
         return;
       }
