@@ -88,10 +88,15 @@
   };
 
   var hiddenBigPicture = function () {
+    clearSocialFooterText();
     bigPictureElement.classList.add('hidden');
     pictureCancelElement.removeEventListener('click', pictureCancelClickHandler);
     commentsLoaderElement.removeEventListener('click', commentLoaderClickHandler);
     document.body.classList.remove('modal-open');
+  };
+
+  var clearSocialFooterText = function () {
+    socialFooterTextElement.value = '';
   };
 
   var createFnc = function (photo) {
