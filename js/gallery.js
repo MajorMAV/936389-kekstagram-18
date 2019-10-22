@@ -16,7 +16,7 @@
   var photoObjects;
   var timeoutId;
 
-  var activeFilter = filtersContainerElement.querySelector('.img-filters__button--active');
+  var activeFilterElement = filtersContainerElement.querySelector('.img-filters__button--active');
 
   var backupElements = document.querySelectorAll('.pictures > *');
 
@@ -25,8 +25,8 @@
     filterButtonElements.forEach(function (item) {
       item.addEventListener('click', function (evt) {
         deactivateFilter();
-        activeFilter = evt.target;
-        activeFilter.classList.add('img-filters__button--active');
+        activeFilterElement = evt.target;
+        activeFilterElement.classList.add('img-filters__button--active');
         if (timeoutId) {
           clearTimeout(timeoutId);
         }
@@ -38,15 +38,15 @@
   };
 
   var deactivateFilter = function () {
-    if (activeFilter) {
-      activeFilter.classList.remove('img-filters__button--active');
+    if (activeFilterElement) {
+      activeFilterElement.classList.remove('img-filters__button--active');
     }
   };
 
   var setFilter = function () {
     clearPhotos();
     var backupFragment = restoreBackup();
-    switch (activeFilter.id) {
+    switch (activeFilterElement.id) {
       case FilterId.POPULAR:
         viewPopularPhotos(backupFragment);
         break;

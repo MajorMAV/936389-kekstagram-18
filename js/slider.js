@@ -16,10 +16,10 @@
   };
 
   var getPinMoveRect = function () {
-    var rect = {};
-    rect.minX = 0;
-    rect.maxX = effectLineElement.offsetWidth;
-    return rect;
+    return {
+      minX: 0,
+      maxX: effectLineElement.offsetWidth
+    };
   };
 
   var setSliderVisibility = function (visible) {
