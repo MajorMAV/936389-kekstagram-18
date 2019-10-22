@@ -56,7 +56,7 @@
   };
 
   var validateHashtags = function (element) {
-    var hashtags = checkHashtasExistence(element);
+    var hashtags = checkHashtagsExistence(element);
     if (!hashtags) {
       return false;
     }
@@ -72,7 +72,7 @@
     return true;
   };
 
-  var checkHashtasExistence = function (element) {
+  var checkHashtagsExistence = function (element) {
     var value = element.value;
     var hashtags = value.replace(/\s{2,}/gi, ' ').trim().split(' ');
     var errors = [];
