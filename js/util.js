@@ -11,19 +11,6 @@
   };
 
   var showErrorFnc = function (message) {
-    var errorElement = document.createElement('p');
-    errorElement.style.position = 'fixed';
-    errorElement.style.top = '0';
-    errorElement.style.width = '100%';
-    errorElement.style.textAlign = 'center';
-    errorElement.style.backgroundColor = 'red';
-    errorElement.style.zIndex = '20';
-    errorElement.textContent = message;
-
-    document.addEventListener('mousedown', documentMousedownHandler);
-    document.addEventListener('keydown', documentKeydownHandler);
-    document.body.insertBefore(errorElement, document.body.childNodes[0]);
-
     var removeHandlers = function () {
       document.removeEventListener('mousedown', documentMousedownHandler);
       document.removeEventListener('keydown', documentKeydownHandler);
@@ -42,6 +29,19 @@
     var documentKeydownHandler = function () {
       removeErrorElement();
     };
+
+    var errorElement = document.createElement('p');
+    errorElement.style.position = 'fixed';
+    errorElement.style.top = '0';
+    errorElement.style.width = '100%';
+    errorElement.style.textAlign = 'center';
+    errorElement.style.backgroundColor = 'red';
+    errorElement.style.zIndex = '20';
+    errorElement.textContent = message;
+
+    document.addEventListener('mousedown', documentMousedownHandler);
+    document.addEventListener('keydown', documentKeydownHandler);
+    document.body.insertBefore(errorElement, document.body.childNodes[0]);
 
   };
 
